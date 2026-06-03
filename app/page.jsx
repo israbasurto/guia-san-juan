@@ -361,9 +361,9 @@ export default function Home() {
                 height={597}
               />
               <p>
-                Guía San Juan es un proyecto de <a href="https://trinium.com.mx" target="_blank" rel="noopener noreferrer"><b>Trinium.</b></a>{' '}
-                Creamos sitios web, software y soluciones digitales con corazón.
+                Guía San Juan es un proyecto de <a href="https://trinium.com.mx" target="_blank" rel="noopener noreferrer"><b>Trinium.</b></a>
               </p>
+              <p>Creamos sitios web, software y soluciones digitales con corazón.</p>
               <a
                 className="sig-link sig-link--wa"
                 href="https://wa.me/524271000100?text=Hola%2C%20vi%20Gu%C3%ADa%20San%20Juan%20y%20me%20interesa%20una%20p%C3%A1gina%20similar%20para%20mi%20negocio."
