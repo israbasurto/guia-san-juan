@@ -1,0 +1,19 @@
+# dependencias
+node_modules/
+
+# build
+.next/
+
+# credenciales — nunca subir
+.env
+.env.local
+.env*.local
+
+# archivos de desarrollo local
+.image-slots.state.json
+screenshots/
+uploads/
+
+# sistema
+.DS_Store
+Thumbs.db
