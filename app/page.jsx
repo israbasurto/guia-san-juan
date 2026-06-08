@@ -49,7 +49,7 @@ const jsonLd = [
     endDate:     '2026-06-30',
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url:         'https://guiaferiasjr.vercel.app',
+    url:         'https://feria.guiasanjuan.mx',
     location: {
       '@type': 'Place',
       name:    'San Juan del Río',
@@ -107,7 +107,7 @@ export default function Home() {
             <a className="navlink" href="#pronto">Muy pronto</a>
           </nav>
           <div className="nav-cta">
-            <a className="btn btn--primary" href="https://guiaferiasjr.vercel.app">
+            <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
               Feria 2026 <span className="arrow">→</span>
             </a>
             <ThemeToggle />
@@ -138,14 +138,14 @@ export default function Home() {
                 y qué eventos no te puedes perder. Todo en un solo lugar, claro y fácil de usar.
               </p>
               <div className="hero-pills">
-                <a className="pill" href="https://guiaferiasjr.vercel.app">🎪 Feria 2026</a>
+                <a className="pill" href="https://feria.guiasanjuan.mx">🎪 Feria 2026</a>
                 <a className="pill" href="#proyecto">📍 Lugares</a>
                 <a className="pill" href="#proyecto">🎶 Eventos</a>
                 <a className="pill" href="#proyecto">🛍️ Comercios</a>
                 <a className="pill" href="#proyecto">🗺️ Rutas</a>
               </div>
               <div className="hero-actions">
-                <a className="btn btn--primary" href="https://guiaferiasjr.vercel.app">
+                <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
                   Consultar Feria San Juan 2026 <span className="arrow">→</span>
                 </a>
                 <a className="btn btn--ghost" href="#proyecto">¿Qué es Guía San Juan?</a>
@@ -205,7 +205,7 @@ export default function Home() {
                   </div>
                   <Countdown />
                   <div className="feria-actions">
-                    <a className="btn btn--primary" href="https://guiaferiasjr.vercel.app">
+                    <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
                       Ir a la guía de la feria <span className="arrow">→</span>
                     </a>
                   </div>
@@ -417,7 +417,7 @@ export default function Home() {
             <nav className="footer-nav" aria-label="Secciones del sitio">
               <h4 className="footer-nav-label">Explora</h4>
               <ul>
-                <li><a href="https://guiaferiasjr.vercel.app">Feria San Juan 2026</a></li>
+                <li><a href="https://feria.guiasanjuan.mx">Feria San Juan 2026</a></li>
                 <li><a href="#proyecto">El proyecto</a></li>
                 <li><a href="#pronto">Muy pronto</a></li>
               </ul>
