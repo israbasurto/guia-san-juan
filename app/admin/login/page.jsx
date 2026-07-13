@@ -16,6 +16,19 @@ export default function LoginPage() {
 
         <form action={action} className="admin-login-form">
           <div className="pf-row">
+            <label className="pf-label" htmlFor="email" style={{ fontSize: 14 }}>Email</label>
+            <input
+              className="pf-field"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="tu@email.com"
+              autoComplete="username"
+              autoFocus
+              required
+            />
+          </div>
+          <div className="pf-row">
             <label className="pf-label" htmlFor="password" style={{ fontSize: 14 }}>Contraseña</label>
             <input
               className="pf-field"
@@ -24,7 +37,6 @@ export default function LoginPage() {
               type="password"
               placeholder="••••••••"
               autoComplete="current-password"
-              autoFocus
               required
             />
           </div>

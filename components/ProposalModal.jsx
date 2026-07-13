@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
+import { prepararSubidas, enviarPropuesta } from '../app/actions/propuestas';
 
 export default function ProposalModal() {
   const [open, setOpen]         = useState(false);
@@ -47,38 +48,32 @@ export default function ProposalModal() {
     setError(null);
 
     try {
-      // Subir imágenes al bucket "propuestas"
-      const imageUrls = [];
-      for (const file of files) {
-        const ext = file.name.split('.').pop();
-        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-        const { error: uploadErr } = await supabase.storage
-          .from('propuestas')
-          .upload(path, file);
-        if (uploadErr) throw uploadErr;
-        const { data: { publicUrl } } = supabase.storage
-          .from('propuestas')
-          .getPublicUrl(path);
-        imageUrls.push(publicUrl);
+      // Subir imágenes con URLs firmadas de un solo uso emitidas por el servidor
+      const rutas = [];
+      if (files.length > 0) {
+        const prep = await prepararSubidas(files.map((f) => f.type));
+        if (prep.error) throw new Error(prep.error);
+        for (let i = 0; i < files.length; i++) {
+          const { path, token } = prep.subidas[i];
+          const { error: uploadErr } = await supabase.storage
+            .from('propuestas')
+            .uploadToSignedUrl(path, token, files[i]);
+          if (uploadErr) throw uploadErr;
+          rutas.push(path);
+        }
       }
 
-      // Insertar propuesta
+      // El texto se valida e inserta en el servidor
       const fd = new FormData(e.target);
-      const { error: insertErr } = await supabase.from('propuestas').insert({
-        categoria:   fd.get('categoria'),
-        nombre:      fd.get('nombre'),
-        descripcion: fd.get('descripcion'),
-        proponente:  fd.get('proponente') || null,
-        email:       fd.get('email')      || null,
-        imagenes:    imageUrls.length ? imageUrls : null,
-      });
-      if (insertErr) throw insertErr;
+      fd.delete('imagenes');
+      const res = await enviarPropuesta(fd, rutas);
+      if (res.error) throw new Error(res.error);
 
       setSuccess(true);
       setFiles([]);
     } catch (err) {
       console.error(err);
-      setError('Hubo un problema al enviar tu propuesta. Intenta de nuevo.');
+      setError(err.message || 'Hubo un problema al enviar tu propuesta. Intenta de nuevo.');
     } finally {
       setSubmitting(false);
     }
@@ -116,6 +111,16 @@ export default function ProposalModal() {
             </p>
 
             <form className="proposal-form" onSubmit={handleSubmit}>
+
+              {/* Honeypot anti-spam: invisible para personas */}
+              <input
+                type="text"
+                name="sitio_web"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+              />
 
               {/* Categoría + Nombre — 2 columnas en desktop */}
               <div className="pf-cols">
