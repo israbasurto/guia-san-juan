@@ -285,8 +285,9 @@ publicación (PLAN.md §9).
 1. ✅ Escribir la migración `0002_modelo_contenido.sql` derivada de este documento (con RLS y enums)
    — hecha y probada en PGlite (`pnpm probar-migracion`: 32 tablas, B7, RLS-1/RLS-2 en verde).
    **Aún no aplicada a Supabase** (crear tablas en producción es decisión aparte).
-2. Escribir los **triggers de la matriz M20** (`matriz-invalidacion.md` §7) y la función que mantiene
-   `verificacion_publica` → migración `0003`.
+2. ✅ Escribir los **triggers de la matriz M20** (`matriz-invalidacion.md` §7) y la función que mantiene
+   `verificacion_publica` → migración `0003`, probada en PGlite (`pnpm probar-triggers`, TI-1..TI-6) y
+   con smoke test contra Supabase real. **Aplicada** junto con 0002.
 3. Automatizar las pruebas **RLS-1** y **RLS-2** contra Supabase real (además del test PGlite) y la
    suite de triggers **TI-1..TI-6**.
 4. Importar la investigación editorial desde la plantilla de proveniencia (TRI-219).
