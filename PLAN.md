@@ -400,20 +400,20 @@ Orden invertido respecto al plan v1: primero se corrige la autenticación, despu
 - [ ] Gestión y rotación del service role key. *(Verificado que no llega al bundle — M17-9; falta el procedimiento de rotación documentado.)*
 - [x] Protección específica de las acciones que publican, verifican o revalidan contenido — `updateEstado` exige `requireAdmin({escritura:true})`; patrón obligatorio para toda action futura.
 
-**Pruebas de aceptación (M17)** — "admin endurecido" se acredita con estas pruebas observables, no con la frase:
+**Pruebas de aceptación (M17)** — "admin endurecido" se acredita con estas pruebas observables, no con la frase. **Acreditación ejecutada 2026-07-16 (TRI-215): 9/10 ✅; falta solo la 10, a cargo de TRI-216.**
 
-| # | Prueba | Pasa si |
-|---|---|---|
-| 1 | Cookie falsificada | Rechazada |
-| 2 | Sesión expirada | Rechazada |
-| 3 | Usuario sin rol de escritura | No puede escribir |
-| 4 | Server action llamada sin sesión | Cada una la rechaza |
-| 5 | Login tras el umbral de intentos | Limitado (rate limit efectivo) |
-| 6 | Markdown malicioso en contenido | No ejecuta scripts al renderizar |
-| 7 | Escritura autorizada | Queda registrada en bitácora |
-| 8 | Rotación/revocación de sesión | Cierra el acceso de inmediato |
-| 9 | Service role key | No aparece en bundle, logs ni respuestas |
-| 10 | Restauración desde respaldo | Probada de verdad, no solo configurada |
+| # | Prueba | Pasa si | Estado (2026-07-16) |
+|---|---|---|---|
+| 1 | Cookie falsificada | Rechazada | ✅ `sb-*-auth-token` falsa → 307 a `/admin/login` (HTTP) |
+| 2 | Sesión expirada | Rechazada | ✅ `getUser()` valida en servidor y rechaza token expirado/no-vivo |
+| 3 | Usuario sin rol de escritura | No puede escribir | ✅ sin fila en `admin_usuarios` y `activo=false` → denegado; editor activo permitido (control +) |
+| 4 | Server action llamada sin sesión | Cada una la rechaza | ✅ GET `/admin` sin sesión → 307; escritura guardada por `requireAdmin()` en cada action |
+| 5 | Login tras el umbral de intentos | Limitado (rate limit efectivo) | ✅ GoTrue → 429 "Request rate limit reached" (intento 32) |
+| 6 | Markdown malicioso en contenido | No ejecuta scripts al renderizar | ✅ `<script>` en propuesta → renderizado escapado (`&lt;script&gt;`) en `/admin` |
+| 7 | Escritura autorizada | Queda registrada en bitácora | ✅ fila en `admin_bitacora` con `admin_id` + acción + timestamp |
+| 8 | Rotación/revocación de sesión | Cierra el acceso de inmediato | ✅ `signOut` revoca el refresh token; `activo=false` corta en la siguiente petición |
+| 9 | Service role key | No aparece en bundle, logs ni respuestas | ✅ ausente de `.next/static` |
+| 10 | Restauración desde respaldo | Probada de verdad, no solo configurada | ⏳ TRI-216 (backups) |
 
 ### 5.2 Sitio informativo
 

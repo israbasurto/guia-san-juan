@@ -17,3 +17,6 @@ uploads/
 # sistema
 .DS_Store
 Thumbs.db
+
+# Supabase CLI
+supabase/.temp/
