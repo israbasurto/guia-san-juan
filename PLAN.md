@@ -223,14 +223,15 @@ tramite_verificaciones             -- PRIVADA por defecto
   --    MATRIZ DE INVALIDACIÓN (M20) — ver abajo
   --  · el cron vence GRUPOS, no fichas
 
--- Matriz de invalidación (M20) — documento versionado en el repo + triggers que la implementan;
--- las ediciones INDIRECTAS se prueban explícitamente:
+-- Matriz de invalidación (M20) — DOCUMENTADA v1 (2026-07-16): ver
+-- docs/modelo/matriz-invalidacion.md (13 reglas, cascadas indirectas, regla M13,
+-- suite de pruebas de triggers). Resumen — las ediciones INDIRECTAS se prueban explícitamente:
 --   tramites.requisitos            → grupo 'requisitos' del trámite
---   costos_tramite (cualquier op)  → grupo 'costos' del trámite
+--   costos_tramite (cualquier op)  → grupo 'costos' del trámite (honorario → además CTA)
 --   dependencia_telefonos          → grupo 'contacto' de la dependencia
 --                                    y de sus trámites que lo consumen
 --   dependencia_horarios(+excep.)  → grupo 'horarios' de la dependencia
---                                    y de los trámites relacionados
+--                                    y de trámites SIN horarios_propios que la consumen
 --   tramites.dependencia_id cambia → grupos 'ubicacion','contacto','horarios' del trámite
 --   representacion_tramite         → preparación comercial del trámite (desactiva CTA)
 
@@ -518,7 +519,7 @@ Una ficha desactualizada servida offline es un riesgo funcional, no una comodida
 1. **Endurecimiento del admin (§5.1) — antes que cualquier CRUD** — se acredita con las 10 pruebas de aceptación M17.
 2. **Seguridad perimetral (M15)**: cabeceras enforzadas, CSP Report-Only, rate limiting de escrituras existentes (incluida `propuestas`), revisión de secretos.
 3. **Auditoría de la captura existente `propuestas` (M16)** como parte del legal mínimo.
-4. **Definir grupos críticos por trámite y documentar la matriz de invalidación (M20)** — puede hacerse desde ya, no depende de migraciones.
+4. ✅ **Definir grupos críticos por trámite y documentar la matriz de invalidación (M20)** — hecho 2026-07-16: `docs/modelo/matriz-invalidacion.md` v1.
 5. **Congelar el modelo §2.2** cerrando B7-B9 (evidencias sin polimorfismo, identidad ligada a auth, separación editorial/comercial, honorarios únicos, proyección M18 definida, matriz M20 documentada) → **solo entonces** escribir migraciones.
 6. Disclaimer inequívoco (§1.1) en sitio y componente `<DisclaimerOficial />`.
 7. Rutas y páginas: `/dependencias/`, `/dependencias/[slug]/`, `/tramites/`, `/tramites/[slug]/` con SSG/ISR, `generateMetadata`, JSON-LD (§3.1).
@@ -624,7 +625,7 @@ Una ficha desactualizada servida offline es un riesgo funcional, no una comodida
 3. Preparación editorial y comercial estén separadas (B8).
 4. Se elimine la duplicidad de honorarios (M19).
 5. La proyección pública esté definida con sus pruebas RLS (M18).
-6. La matriz de invalidación por cambio esté documentada (M20).
+6. ✅ La matriz de invalidación por cambio esté documentada (M20) — `docs/modelo/matriz-invalidacion.md` v1 (2026-07-16).
 
 **NO GO a publicación hasta que, además:**
 1. Pasen las diez pruebas del admin (M17).
