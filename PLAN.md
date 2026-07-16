@@ -116,7 +116,9 @@ Convenciones de URL: español, minúsculas, sin acentos, guiones. Slugs inmutabl
 
 Cambios v3 (B4/B5): la frescura se registra **por campo crítico, no por ficha**; se eliminan las relaciones polimórficas (`entidad_tipo + entidad_id`) a favor de **tablas de relación específicas con FK reales** — más repetitivas pero auditables (estrategia recomendada por el dictamen B5). Timestamps de verificación/auditoría con zona (`timestamptz`); `date` solo para vigencias editoriales. Moneda explícita aunque hoy todo sea MXN.
 
-> ⛔ **Puerta (v4)**: las migraciones NO se escriben hasta cerrar B7-B9: (1) `evidencias` con FK real sin polimorfismo, (2) `admin_usuarios` ligado a la identidad autenticada, (3) preparación editorial separada de la comercial, (4) honorarios sin duplicidad, (5) proyección pública definida con sus pruebas RLS, (6) matriz de invalidación documentada.
+> ✅ **Puerta levantada (2026-07-16)**: las 6 condiciones B7-B9/M18-M20 quedaron cerradas en diseño. El modelo está **congelado v1** en `docs/modelo/modelo-contenido-v1.md` (evidencias con FK real sin polimorfismo B7, identidad ligada a auth B9, separación editorial/comercial B8, honorarios sin duplicidad M19, proyección pública sin puerta trasera + pruebas RLS M18, matriz de invalidación M20). **Ya se puede escribir la migración `0002`** (Fase 1B); aplicarla y publicar sigue condicionado a pasar RLS-1/RLS-2 (§9).
+>
+> _(Puerta original v4: las migraciones no se escribían hasta cerrar B7-B9; cumplida.)_
 >
 > Mientras tanto, la investigación editorial NO se detiene: se registra en una **plantilla de proveniencia controlada** (mismo esquema: entidad, grupo, valor, fuente, fecha, responsable) que se importa al ejecutar las migraciones sin perder trazabilidad.
 
@@ -612,20 +614,21 @@ Una ficha desactualizada servida offline es un riesgo funcional, no una comodida
 | Investigación editorial con plantilla de proveniencia | **GO** |
 | Diseño de rutas y prototipos sin publicar | **GO** |
 | Definir grupos críticos y matriz de invalidación (M20) | **GO** |
-| Congelar §2.2 | NO GO hasta B7-B9 |
-| Ejecutar migraciones | NO GO — ver condiciones abajo |
+| Congelar §2.2 | ✅ **GO** — congelado v1 (`docs/modelo/modelo-contenido-v1.md`, 2026-07-16) |
+| Escribir migración `0002` | ✅ **GO** (puerta B7-B9/M18-M20 cumplida) |
+| Aplicar migraciones y publicar | NO GO hasta RLS-1/RLS-2 y demás condiciones de publicación abajo |
 | Publicar las 5 fichas piloto | NO GO — ver condiciones abajo |
 | Preparar/lanzar Fase 2 comercial | NO GO (B6 + precondiciones) |
 | Recibir documentos reales | NO GO |
 | Fases 3-4 | No evaluables; dependen de validar 1-2 |
 
-**NO GO a migraciones hasta que:**
-1. `*_evidencias` tenga FK real sin polimorfismo (B7).
-2. `admin_usuarios` esté ligado a la identidad autenticada (B9).
-3. Preparación editorial y comercial estén separadas (B8).
-4. Se elimine la duplicidad de honorarios (M19).
-5. La proyección pública esté definida con sus pruebas RLS (M18).
-6. ✅ La matriz de invalidación por cambio esté documentada (M20) — `docs/modelo/matriz-invalidacion.md` v1 (2026-07-16).
+**NO GO a migraciones — ✅ LEVANTADO 2026-07-16** (modelo congelado v1, `docs/modelo/modelo-contenido-v1.md`):
+1. ✅ `*_evidencias` con FK real sin polimorfismo (B7) — §4 del modelo.
+2. ✅ `admin_usuarios` ligado a la identidad autenticada (B9) — migración `0001`.
+3. ✅ Preparación editorial y comercial separadas (B8) — §5 del modelo.
+4. ✅ Sin duplicidad de honorarios (M19) — §6 del modelo.
+5. ✅ Proyección pública definida sin puerta trasera + pruebas RLS (M18) — §7 del modelo.
+6. ✅ Matriz de invalidación documentada (M20) — `docs/modelo/matriz-invalidacion.md` v1.
 
 **NO GO a publicación hasta que, además:**
 1. Pasen las diez pruebas del admin (M17).
