@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframes — Guía San Juan</title>
+<style>
+  :root{
+    color-scheme:light dark;
+    --paper:#f6f7f8; --surface:#ffffff; --ink:#182230; --ink-soft:#4a5568;
+    --line:#c9d0d9; --line-soft:#e3e7ec;
+    --fill:#eef0f3; --fill-2:#e2e6eb;
+    --azul:#2456a6; --azul-deep:#16345c; --azul-tint:#e8eef8;
+    --verde:#1f8a5b; --verde-tint:#e6f4ec;
+    --ambar:#a97614; --ambar-tint:#faf3e2;
+    --rojo:#b3402f; --rojo-tint:#fbeae7;
+    --mono:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;
+    --serif:'Spectral',Georgia,serif;
+    --sans:'Hanken Grotesk',system-ui,'Segoe UI',Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0f1520; --surface:#182233; --ink:#e9edf3; --ink-soft:#a6b1c2;
+      --line:#3a4a63; --line-soft:#243247;
+      --fill:#1e2839; --fill-2:#263349;
+      --azul:#84aae4; --azul-deep:#b9d0f0; --azul-tint:#1d2c45;
+      --verde:#5cc294; --verde-tint:#173328;
+      --ambar:#d9a94e; --ambar-tint:#332a15;
+      --rojo:#e08a7b; --rojo-tint:#3a201b;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f6f7f8; --surface:#ffffff; --ink:#182230; --ink-soft:#4a5568;
+    --line:#c9d0d9; --line-soft:#e3e7ec; --fill:#eef0f3; --fill-2:#e2e6eb;
+    --azul:#2456a6; --azul-deep:#16345c; --azul-tint:#e8eef8;
+    --verde:#1f8a5b; --verde-tint:#e6f4ec; --ambar:#a97614; --ambar-tint:#faf3e2;
+    --rojo:#b3402f; --rojo-tint:#fbeae7;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1520; --surface:#182233; --ink:#e9edf3; --ink-soft:#a6b1c2;
+    --line:#3a4a63; --line-soft:#243247; --fill:#1e2839; --fill-2:#263349;
+    --azul:#84aae4; --azul-deep:#b9d0f0; --azul-tint:#1d2c45;
+    --verde:#5cc294; --verde-tint:#173328; --ambar:#d9a94e; --ambar-tint:#332a15;
+    --rojo:#e08a7b; --rojo-tint:#3a201b;
+  }
+
+  html{background:var(--paper)}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--paper);
+    line-height:1.5; margin:0; padding:0 20px 90px;
+  }
+  .page{max-width:1120px; margin:0 auto}
+
+  header.masthead{padding:52px 0 20px; border-bottom:3px solid var(--azul); margin-bottom:10px}
+  .masthead .kicker{font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--azul); margin:0 0 10px}
+  .masthead h1{font-family:var(--serif); font-weight:600; font-size:clamp(28px,4.6vw,40px); line-height:1.14; margin:0 0 12px; text-wrap:balance}
+  .masthead p.lede{max-width:66ch; color:var(--ink-soft); font-size:16px; margin:0 0 18px}
+  .legend{display:flex; flex-wrap:wrap; gap:8px; font-size:12.5px}
+  .legend .it{display:flex; align-items:center; gap:7px; padding:5px 12px; border:1px solid var(--line-soft); border-radius:99px; background:var(--surface); color:var(--ink-soft)}
+  .legend .sw{width:13px; height:13px; border-radius:3px; flex:none}
+  .legend .sw.gris{background:var(--fill-2); border:1px solid var(--line)}
+  .legend .sw.azul{background:var(--azul)}
+  .legend .sw.punteado{border:1.5px dashed var(--ambar); background:transparent}
+
+  /* ---------- secciones ---------- */
+  section.pantalla{margin:60px 0 0}
+  .eyebrow{display:flex; align-items:baseline; gap:12px; margin-bottom:4px}
+  .eyebrow .tag{font-family:var(--mono); font-size:12px; color:var(--azul); font-weight:600}
+  .eyebrow .fase{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:2px 10px; border-radius:99px; background:var(--azul-tint); color:var(--azul-deep)}
+  .eyebrow .fase.f2{background:var(--ambar-tint); color:var(--ambar)}
+  section.pantalla h2{font-family:var(--serif); font-weight:600; font-size:clamp(21px,3vw,27px); margin:0 0 4px}
+  section.pantalla .ruta{font-family:var(--mono); font-size:13px; color:var(--ink-soft); margin:0 0 6px}
+  section.pantalla > p.intro{color:var(--ink-soft); max-width:70ch; margin:0 0 24px; font-size:15px}
+
+  .duo{display:grid; grid-template-columns:minmax(0,380px) 1fr; gap:32px; align-items:start}
+  .duo.ancho{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:880px){ .duo,.duo.ancho{grid-template-columns:1fr} }
+
+  /* ---------- marcos ---------- */
+  .telefono{
+    background:var(--surface); border:2px solid var(--line); border-radius:26px;
+    padding:14px 12px 18px; box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .telefono .muesca{width:86px; height:5px; border-radius:99px; background:var(--line); margin:0 auto 12px}
+  .desktop{
+    background:var(--surface); border:2px solid var(--line); border-radius:12px; overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .desktop .barra{display:flex; align-items:center; gap:6px; padding:8px 12px; border-bottom:1px solid var(--line-soft); background:var(--fill)}
+  .desktop .barra i{width:9px; height:9px; border-radius:50%; background:var(--line); display:block}
+  .desktop .barra .urlbar{flex:1; height:16px; border-radius:99px; background:var(--surface); border:1px solid var(--line-soft); font-family:var(--mono); font-size:9.5px; color:var(--ink-soft); display:flex; align-items:center; padding:0 10px}
+  .desktop .lienzo{padding:14px}
+
+  /* ---------- piezas de wireframe ---------- */
+  .wf{font-size:11.5px; color:var(--ink)}
+  .wf .fila{display:flex; gap:8px; align-items:center}
+  .b{background:var(--fill); border:1px solid var(--line); border-radius:6px}
+  .b2{background:var(--fill-2); border:1px solid var(--line); border-radius:6px}
+  .linea{height:8px; border-radius:99px; background:var(--fill-2); margin:5px 0}
+  .linea.c60{width:60%} .linea.c80{width:80%} .linea.c40{width:40%} .linea.c90{width:90%}
+  .titulo-wf{font-weight:800; font-size:14.5px; line-height:1.25; margin:2px 0 4px}
+  .etiqueta{font-family:var(--mono); font-size:9px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft)}
+  .caja{border:1px solid var(--line); border-radius:8px; padding:9px 10px; margin:8px 0; background:var(--surface)}
+  .caja.gris{background:var(--fill)}
+  .caja h5{margin:0 0 5px; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); font-weight:700}
+  .btn{display:flex; align-items:center; justify-content:center; gap:6px; border-radius:8px; padding:10px 8px; font-weight:700; font-size:12px; text-align:center; border:1px solid var(--line)}
+  .btn.primario{background:var(--azul); color:var(--paper); border-color:var(--azul)}
+  .btn.wa{background:var(--verde); color:var(--paper); border-color:var(--verde)}
+  .btn.fantasma{background:var(--surface); color:var(--ink)}
+  .btn.deshab{background:var(--fill); color:var(--ink-soft); border-style:dashed}
+  .navbar-wf{display:flex; align-items:center; justify-content:space-between; padding:6px 4px 10px; border-bottom:1px solid var(--line-soft); margin-bottom:8px}
+  .navbar-wf .logo{width:84px; height:14px; border-radius:4px; background:var(--fill-2)}
+  .navbar-wf .menu{display:flex; gap:5px}
+  .navbar-wf .menu i{width:26px; height:10px; border-radius:4px; background:var(--fill); display:block}
+  .buscador{display:flex; align-items:center; gap:8px; border:2px solid var(--azul); border-radius:10px; padding:10px 12px; background:var(--surface); font-size:12.5px; color:var(--ink-soft)}
+  .buscador .lupa{width:14px; height:14px; border:2px solid var(--azul); border-radius:50%; position:relative; flex:none}
+  .buscador .lupa::after{content:''; position:absolute; width:6px; height:2px; background:var(--azul); transform:rotate(45deg); bottom:-2px; right:-4px}
+  .chip-wf{display:inline-block; font-size:10px; font-weight:700; padding:2px 9px; border-radius:99px; background:var(--fill); border:1px solid var(--line); color:var(--ink-soft)}
+  .chip-wf.on{background:var(--azul); color:var(--paper); border-color:var(--azul)}
+  .aviso{border:1.5px dashed var(--ambar); background:var(--ambar-tint); border-radius:8px; padding:7px 10px; font-size:10.5px; color:var(--ambar); font-weight:600; margin:8px 0}
+  .check-linea{display:flex; gap:8px; align-items:flex-start; margin:6px 0}
+  .check-linea .cb{width:13px; height:13px; border:1.5px solid var(--azul); border-radius:3px; flex:none; margin-top:1px}
+  .check-linea .linea{flex:1; margin:4px 0}
+  .fecha-sec{font-family:var(--mono); font-size:9px; color:var(--verde); white-space:nowrap}
+  .fecha-sec.viejo{color:var(--ambar)}
+  .tabla-wf{width:100%; border-collapse:collapse; font-size:10.5px}
+  .tabla-wf th{text-align:left; font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); padding:5px 8px; border-bottom:1px solid var(--line)}
+  .tabla-wf td{padding:6px 8px; border-bottom:1px solid var(--line-soft); vertical-align:middle}
+  .tabla-wf .barra-celda{height:8px; border-radius:99px; background:var(--fill-2)}
+  .estado-pill{display:inline-block; font-size:9px; font-weight:700; padding:1.5px 8px; border-radius:99px}
+  .estado-pill.ok{background:var(--verde-tint); color:var(--verde)}
+  .estado-pill.warn{background:var(--ambar-tint); color:var(--ambar)}
+  .estado-pill.err{background:var(--rojo-tint); color:var(--rojo)}
+  .estado-pill.neutro{background:var(--fill); color:var(--ink-soft)}
+  .mapa-ph{height:76px; border-radius:8px; background:var(--fill); border:1px solid var(--line); position:relative; overflow:hidden; margin:8px 0}
+  .mapa-ph::before,.mapa-ph::after{content:''; position:absolute; background:var(--line-soft)}
+  .mapa-ph::before{width:1px; top:0; bottom:0; left:38%}
+  .mapa-ph::after{height:1px; left:0; right:0; top:52%}
+  .mapa-ph .pin{position:absolute; left:48%; top:34%; width:12px; height:12px; border-radius:50% 50% 50% 0; background:var(--azul); transform:rotate(-45deg)}
+  .acordeon{border:1px solid var(--line); border-radius:8px; overflow:hidden; margin:8px 0}
+  .acordeon .item{display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-top:1px solid var(--line-soft); font-size:11px; font-weight:600}
+  .acordeon .item:first-child{border-top:none}
+  .acordeon .item .flecha{color:var(--ink-soft); font-size:10px}
+
+  /* marcadores de anotación */
+  .marca{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:17px; height:17px; border-radius:50%; background:var(--azul); color:var(--paper);
+    font-size:10px; font-weight:800; flex:none; vertical-align:middle;
+    font-variant-numeric:tabular-nums; line-height:1;
+  }
+  .anotaciones{display:flex; flex-direction:column; gap:12px}
+  .anotaciones .nota{display:grid; grid-template-columns:24px 1fr; gap:10px; font-size:14px}
+  .anotaciones .nota .marca{margin-top:2px}
+  .anotaciones .nota b{display:block; font-size:14.5px}
+  .anotaciones .nota span{color:var(--ink-soft); font-size:13.5px}
+  .anotaciones .nota .ref{font-family:var(--mono); font-size:11px; color:var(--azul); font-weight:600}
+
+  /* variantes CTA */
+  .variantes{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px}
+  @media (max-width:760px){ .variantes{grid-template-columns:1fr} }
+  .variante{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px}
+  .variante h4{margin:0 0 2px; font-size:13.5px; display:flex; align-items:center; gap:8px}
+  .variante .cuando{font-size:12px; color:var(--ink-soft); margin:0 0 10px; min-height:32px}
+  .punto{width:9px; height:9px; border-radius:50%; flex:none}
+  .punto.gris{background:var(--line)} .punto.ambar{background:var(--ambar)} .punto.verde{background:var(--verde)}
+
+  .nota-pie{margin-top:14px; font-size:13px; color:var(--ink-soft); max-width:78ch}
+  .nota-pie b{color:var(--ink)}
+
+  .footnotes{margin-top:64px; border-top:1px solid var(--line); padding-top:18px; font-size:13px; color:var(--ink-soft); display:grid; gap:6px; max-width:80ch}
+  .footnotes b{color:var(--ink)}
+
+  @media (prefers-reduced-motion: no-preference){
+    section.pantalla{animation:up .5s ease both}
+    @keyframes up{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="kicker">Guía San Juan · Documento de trabajo</p>
+    <h1>Wireframes de las próximas features</h1>
+    <p class="lede">
+      Estructura y funciones de las pantallas que se integran en Fase 1A/1B (portal ciudadano y admin)
+      y las dos piezas clave de Fase 2 (landing de gestoría y canal de carga).
+      Son wireframes: definen jerarquía, contenido y comportamiento — no el diseño visual final.
+      Cada anotación referencia el requisito del PLAN.md que la origina.
+    </p>
+    <div class="legend">
+      <span class="it"><span class="sw gris"></span> Contenido variable (viene de Supabase)</span>
+      <span class="it"><span class="sw azul"></span> Acción principal</span>
+      <span class="it"><span class="sw punteado"></span> Regla / restricción del plan</span>
+      <span class="it">Público = móvil primero · Admin = escritorio</span>
+    </div>
+  </header>
+
+  <!-- ══════════════ 01 HOME ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">01</span><span class="fase">Fase 1B</span></div>
+    <h2>Home evolucionado</h2>
+    <p class="ruta">/</p>
+    <p class="intro">Deja de ser teaser de feria: el buscador es el protagonista y resuelve sin navegar cuando puede (answer box). Todo lo demás son accesos directos a las tres áreas de contenido.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <p class="titulo-wf" style="font-size:16px; text-align:center; margin:14px 0 10px">¿Qué trámite necesitas? <span class="marca">1</span></p>
+        <div class="buscador"><span class="lupa"></span> licensia de conducir…</div>
+        <div class="caja" style="border-color:var(--azul)">
+          <h5>Respuesta instantánea <span class="marca">2</span></h5>
+          <b style="font-size:12px">Licencia de conducir — requisitos y costo</b>
+          <div class="linea c80"></div>
+          <div class="fila" style="margin-top:6px">
+            <div class="btn primario" style="flex:1">📞 Llamar</div>
+            <div class="btn fantasma" style="flex:1">Ver ficha completa</div>
+          </div>
+        </div>
+        <div class="fila" style="margin:10px 0 4px; flex-wrap:wrap; gap:5px">
+          <span class="chip-wf on">Trámites</span><span class="chip-wf">Dependencias</span><span class="chip-wf">Directorio</span><span class="chip-wf">Guías</span>
+        </div>
+        <div class="caja gris">
+          <h5>Más buscados <span class="marca">3</span></h5>
+          <div class="linea c80"></div><div class="linea c60"></div><div class="linea c90"></div>
+        </div>
+        <div class="aviso">Proyecto de Trinium, independiente del Gobierno Municipal <span class="marca">4</span></div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>Buscador prominente, client-side</b><span>Índice JSON precargado (&lt; 500 registros), tolerante a acentos y errores comunes: "licensia", "acta de nacimineto", "sjr". Las búsquedas sin resultado se registran normalizadas y sin datos personales — priorizan qué capturar después.</span> <span class="ref">§4 · busquedas_sin_resultado</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Answer box local</b><span>Si la consulta es un dato puntual (teléfono, costo, horario) lo muestra ahí mismo con botón <code>tel:</code>, sin navegar. Evoluciona en Fase 2; en Fase 3 el mismo motor alimenta al bot de WhatsApp.</span> <span class="ref">§4 · Fase 2</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Accesos directos</b><span>Trámites más consultados (desde Analytics) + entradas a las cuatro secciones. Reemplaza el hero de countdown de la feria (copy post-feria pendiente, Fase 1B).</span> <span class="ref">§7 · 1B.5</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Disclaimer inequívoco</b><span>Redacción M4: "proyecto DE Trinium, independiente DEL Gobierno Municipal". Presente en home y footer; componente <code>&lt;DisclaimerOficial /&gt;</code> reutilizado en todas las fichas.</span> <span class="ref">M4 · §1.1</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 02 FICHA DE TRÁMITE ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">02</span><span class="fase">Fase 1A</span></div>
+    <h2>Ficha de trámite — la página clave</h2>
+    <p class="ruta">/tramites/[slug]/</p>
+    <p class="intro">El activo SEO y de negocio. Una columna, controles ≥ 44px, cuerpo ≥ 17px. Sigue el orden exacto de §2.1: la información completa es gratis; el CTA de gestoría aparece solo cuando el servicio es operable para ese trámite.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <div class="etiqueta">Inicio › Trámites › Licencias</div>
+        <p class="titulo-wf">Requisitos para licencia de conducir en San Juan del Río <span class="marca">1</span></p>
+        <div class="linea c90"></div><div class="linea c60"></div>
+        <div class="aviso">Guía San Juan es un proyecto de Trinium, independiente del Gobierno Municipal. No es un sitio oficial.</div>
+        <div class="caja" style="background:var(--azul-tint); border-color:var(--azul)">
+          <div class="etiqueta" style="color:var(--azul)">Información crítica verificada entre el 3 abr y el 10 jul <span class="marca">2</span></div>
+        </div>
+        <div class="caja">
+          <h5>Requisitos <span class="fecha-sec viejo">verif. 3 abr</span></h5>
+          <div class="check-linea"><span class="cb"></span><div class="linea c80"></div></div>
+          <div class="check-linea"><span class="cb"></span><div class="linea c60"></div></div>
+          <div class="check-linea"><span class="cb"></span><div class="linea c90"></div></div>
+        </div>
+        <div class="caja">
+          <h5>Costos <span class="fecha-sec">verif. 8 jul</span> <span class="marca">3</span></h5>
+          <table class="tabla-wf">
+            <tr><td>Derechos (gobierno)</td><td style="text-align:right; font-family:var(--mono)">$ 700</td></tr>
+            <tr><td>Honorarios del servicio</td><td style="text-align:right; font-family:var(--mono)">$ —</td></tr>
+            <tr><td><b>Total estimado</b></td><td style="text-align:right; font-family:var(--mono)"><b>$ 700–850</b></td></tr>
+          </table>
+          <div class="etiqueta" style="margin-top:4px">vigencia: 2026 · estimación por rango</div>
+        </div>
+        <div class="caja">
+          <h5>Dónde se hace <span class="fecha-sec">verif. 10 jul</span></h5>
+          <div class="linea c60"></div>
+          <div class="mapa-ph"><span class="pin"></span></div>
+          <div class="fila">
+            <div class="btn primario" style="flex:1">📞 Llamar</div>
+            <div class="btn fantasma" style="flex:1">Cómo llegar</div>
+          </div>
+          <div class="etiqueta" style="margin-top:6px">Horarios: los de la dependencia <span class="marca">4</span></div>
+        </div>
+        <div class="caja gris">
+          <h5>Documentos descargables</h5>
+          <div class="linea c60"></div>
+        </div>
+        <div class="btn wa">💬 ¿No tienes tiempo? Un agente lo hace por ti — desde $X <span class="marca">5</span></div>
+        <div class="acordeon">
+          <div class="item">¿Puedo hacerlo en línea? <span class="flecha">▾</span></div>
+          <div class="item">¿Qué pasa si… ? <span class="flecha">▾</span></div>
+        </div>
+        <div class="caja gris" style="text-align:center">
+          <div class="etiqueta">¿Te sirvió? · Reportar dato incorrecto <span class="marca">6</span></div>
+        </div>
+        <div class="caja gris"><h5>Trámites relacionados</h5><div class="linea c80"></div><div class="linea c60"></div></div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>H1 = intención de búsqueda literal</b><span>Título y H1 replican la búsqueda real. JSON-LD <code>GovernmentService</code> + <code>BreadcrumbList</code> (comprensión semántica, sin prometer rich results). OG con imagen dinámica para compartirse por WhatsApp.</span> <span class="ref">§2.1 · §3.1 · M3</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Antigüedad honesta, por sección</b><span>Rango "verificada entre {más antigua} y {más reciente}" arriba + fecha junto a cada bloque. Nada editable a mano: deriva de <code>tramite_verificaciones</code> (privada) vía la proyección pública cerrada. Grupo &gt; 180 días → aviso "podría haber cambiado, confírmalo por teléfono".</span> <span class="ref">M24 · M18 · B4</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Costos desglosados, no un "costo"</b><span>Derechos / honorarios / gastos, cada fila con vigencia y moneda desde <code>costos_tramite</code> — única fuente de verdad. Con rangos o variables se presenta como estimación. En conflicto entre fuentes: "dato no confirmado" + teléfono oficial, nunca el "dato conservador".</span> <span class="ref">M12 · M19 · M13</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Horarios heredados de la dependencia</b><span>La ficha consume la verificación vigente de <code>dependencia_horarios</code>; solo muestra horario propio si existe <code>tramite_horarios</code>. Editar el horario de la dependencia invalida el grupo en sus trámites (matriz de invalidación).</span> <span class="ref">M21 · M20</span></div></div>
+        <div class="nota"><span class="marca">5</span><div><b>CTA con tres estados — ver variantes abajo</b><span>Abre WhatsApp con mensaje precargado que incluye el trámite; sin formularios. El precio se deriva de la fila <code>categoria='honorario'</code> vigente. Default en Fase 1: <b>oculto</b>. Clics medidos por trámite (Analytics custom events).</span> <span class="ref">M5 · M19 · §2.1.9</span></div></div>
+        <div class="nota"><span class="marca">6</span><div><b>Reporte ciudadano</b><span>"Reportar dato incorrecto" → <code>tramite_reportes</code> (privada) → entra con prioridad a la cola de verificación del admin. Se activa en Fase 2.</span> <span class="ref">§3.4 · B5</span></div></div>
+      </div>
+    </div>
+
+    <div class="variantes wf">
+      <div class="variante">
+        <h4><span class="punto gris"></span> cta_estado = 'oculto'</h4>
+        <p class="cuando">Default Fase 1. El bloque no se renderiza: la ficha es 100% informativa.</p>
+        <div class="caja gris" style="border-style:dashed; text-align:center; margin:0">
+          <span class="etiqueta">— sin bloque de gestoría —</span>
+        </div>
+      </div>
+      <div class="variante">
+        <h4><span class="punto ambar"></span> 'proximamente'</h4>
+        <p class="cuando">Servicio en preparación. Informa sin invitar a enviar datos ni documentos.</p>
+        <div class="caja" style="margin:0; border-color:var(--ambar)">
+          <b style="font-size:12px">Pronto: un agente podrá hacerlo por ti</b>
+          <div class="etiqueta" style="margin-top:4px">Sin botón de contacto · sin captura</div>
+        </div>
+      </div>
+      <div class="variante">
+        <h4><span class="punto verde"></span> 'activo'</h4>
+        <p class="cuando">Solo por trámite, con representación (ambos controles M11), precio, términos, privacidad y canal seguro aprobados.</p>
+        <div class="btn wa" style="margin:0">💬 Solicitar agente — desde $X</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 03 DEPENDENCIA ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">03</span><span class="fase">Fase 1A</span></div>
+    <h2>Ficha de dependencia</h2>
+    <p class="ruta">/dependencias/[slug]/</p>
+    <p class="intro">La fuente de contacto, ubicación y horarios que los trámites consumen. Optimizada para la acción más común: llamar.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <div class="etiqueta">Inicio › Dependencias</div>
+        <p class="titulo-wf">Organismo de Agua Potable (JAPAM) <span class="marca">1</span></p>
+        <div class="linea c90"></div><div class="linea c70" style="width:70%"></div>
+        <div class="aviso">Proyecto independiente · No es un sitio oficial</div>
+        <div class="caja">
+          <h5>Teléfonos <span class="fecha-sec">verif. 10 jul</span> <span class="marca">2</span></h5>
+          <div class="fila" style="margin:6px 0"><div class="linea c40" style="margin:0"></div><div class="btn primario" style="padding:7px 14px; margin-left:auto">📞 Llamar</div></div>
+          <div class="fila" style="margin:6px 0"><div class="linea c60" style="margin:0"></div><div class="btn primario" style="padding:7px 14px; margin-left:auto">📞 Llamar</div></div>
+          <div class="etiqueta">ext. visibles · solo números confirmados</div>
+        </div>
+        <div class="caja">
+          <h5>Horarios <span class="fecha-sec">verif. 10 jul</span> <span class="marca">3</span></h5>
+          <table class="tabla-wf">
+            <tr><td>Lun–Vie</td><td style="text-align:right; font-family:var(--mono)">8:00–15:00</td></tr>
+            <tr><td>Sáb</td><td style="text-align:right; font-family:var(--mono)">9:00–13:00</td></tr>
+          </table>
+          <div class="etiqueta" style="color:var(--ambar)">⚠ 16 sep: cerrado (excepción)</div>
+        </div>
+        <div class="caja">
+          <h5>Ubicación</h5>
+          <div class="mapa-ph"><span class="pin"></span></div>
+          <div class="btn fantasma">Cómo llegar (Google Maps)</div>
+        </div>
+        <div class="caja gris">
+          <h5>Trámites que gestiona <span class="marca">4</span></h5>
+          <div class="linea c80"></div><div class="linea c60"></div><div class="linea c90"></div>
+        </div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>Una intención local por ficha</b><span>H1 con el nombre como lo busca la gente ("teléfono agua potable sjr"). JSON-LD <code>GovernmentOffice</code> con horarios, teléfono y geo — puede aparecer en resultados locales.</span> <span class="ref">§3.1 · §3.2</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Teléfonos con FK real y RLS por hijo</b><span><code>dependencia_telefonos</code>: solo se exponen si la dependencia está <code>publicado</code> (la política demuestra el padre). Botones <code>tel:</code> grandes (≥ 44px), extensión visible, marca de confirmado.</span> <span class="ref">B5 · §4</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Horarios estructurados + excepciones</b><span><code>dependencia_horarios</code> (día, abre, cierra — TZ America/Mexico_City) + <code>dependencia_horarios_excepciones</code> para festivos y cierres. Editarlos invalida el grupo "horarios" de la dependencia y de sus trámites.</span> <span class="ref">§2.2 · M20</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Interlinking de trámites</b><span>Lista de trámites publicados de esta dependencia — el circuito trámite ↔ dependencia sostiene el SEO interno. Retirar una dependencia con trámites publicados está bloqueado hasta reasignarlos.</span> <span class="ref">§2.2 · §8</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 04 DIRECTORIO ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">04</span><span class="fase">Fase 1B</span></div>
+    <h2>Directorio telefónico</h2>
+    <p class="ruta">/directorio/</p>
+    <p class="intro">Una sola página buscable: escribe y marca. Pensada para el usuario que solo quiere el número, sin navegar fichas.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <p class="titulo-wf">Directorio telefónico</p>
+        <div class="buscador"><span class="lupa"></span> Busca dependencia u oficina… <span class="marca">1</span></div>
+        <div class="fila" style="margin:8px 0 4px; flex-wrap:wrap; gap:5px">
+          <span class="chip-wf on">Todas</span><span class="chip-wf">Municipal</span><span class="chip-wf">Estatal</span><span class="chip-wf">Emergencias</span>
+        </div>
+        <div class="caja" style="display:flex; align-items:center; gap:10px">
+          <div style="flex:1"><div class="linea c60" style="margin:2px 0"></div><div class="etiqueta">ext. 104 · confirmado</div></div>
+          <div class="btn primario" style="padding:9px 16px">📞</div>
+        </div>
+        <div class="caja" style="display:flex; align-items:center; gap:10px">
+          <div style="flex:1"><div class="linea c80" style="margin:2px 0"></div><div class="etiqueta">directo</div></div>
+          <div class="btn primario" style="padding:9px 16px">📞</div>
+        </div>
+        <div class="caja" style="display:flex; align-items:center; gap:10px">
+          <div style="flex:1"><div class="linea c40" style="margin:2px 0"></div><div class="etiqueta">ext. 2201</div></div>
+          <div class="btn primario" style="padding:9px 16px">📞 <span class="marca">2</span></div>
+        </div>
+        <div class="caja gris" style="text-align:center">
+          <div class="etiqueta">¿No encontraste el número? Repórtalo <span class="marca">3</span></div>
+        </div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>Filtro instantáneo</b><span>Mismo índice client-side del home, filtrando mientras se escribe, tolerante a errores. Chips de categoría para explorar sin teclear.</span> <span class="ref">§4</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Cada fila marca directo</b><span>Botón <code>tel:</code> por número (con extensión indicada). Datos de <code>directorio</code> + <code>directorio_telefonos</code>, con su propio ciclo de verificación (<code>directorio_verificaciones</code>, <code>directorio_fuentes</code>).</span> <span class="ref">§2.2 · B5</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Hueco → cola editorial</b><span>Las búsquedas sin resultado quedan registradas (normalizadas, sin datos personales, retención 90 días) y priorizan la captura. El reporte explícito alimenta la misma cola.</span> <span class="ref">§2.2 busquedas_sin_resultado</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 05 ADMIN ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">05</span><span class="fase">Fase 1A</span></div>
+    <h2>Admin: CRUD + cola de verificación por grupo</h2>
+    <p class="ruta">/admin (Supabase Auth, requireAdmin por action)</p>
+    <p class="intro">El admin existente (ya endurecido, M17) se amplía: la pieza nueva no es el CRUD sino el flujo de verificación — la cola trabaja por <b>grupo crítico</b>, no por ficha, y cada acción queda en bitácora con identidad real.</p>
+    <div class="duo ancho">
+      <div class="desktop wf">
+        <div class="barra"><i></i><i></i><i></i><div class="urlbar">guiasanjuan.mx/admin/verificacion</div></div>
+        <div class="lienzo">
+          <div class="fila" style="margin-bottom:10px; gap:14px">
+            <div style="width:120px">
+              <div class="etiqueta" style="margin-bottom:6px">Menú</div>
+              <div class="caja gris" style="margin:0 0 5px; padding:6px 9px">Trámites</div>
+              <div class="caja gris" style="margin:0 0 5px; padding:6px 9px">Dependencias</div>
+              <div class="caja" style="margin:0 0 5px; padding:6px 9px; border-color:var(--azul); font-weight:700">Verificación <span class="estado-pill warn">7</span></div>
+              <div class="caja gris" style="margin:0 0 5px; padding:6px 9px">Directorio</div>
+              <div class="caja gris" style="margin:0; padding:6px 9px">Bitácora</div>
+            </div>
+            <div style="flex:1; min-width:0">
+              <p class="titulo-wf" style="margin-top:0">Cola de verificación <span class="marca">1</span></p>
+              <div class="fila" style="gap:5px; margin-bottom:8px; flex-wrap:wrap">
+                <span class="chip-wf on">Todo</span><span class="chip-wf">Vencido &gt; 90d</span><span class="chip-wf">Invalidado por edición</span><span class="chip-wf">Con reportes</span>
+              </div>
+              <table class="tabla-wf">
+                <tr><th>Entidad</th><th>Grupo</th><th>Motivo</th><th>Vence</th><th></th></tr>
+                <tr>
+                  <td><div class="barra-celda" style="width:110px"></div></td>
+                  <td><span class="estado-pill neutro">requisitos</span></td>
+                  <td><span class="estado-pill err">reporte ciudadano</span></td>
+                  <td style="font-family:var(--mono)">—</td>
+                  <td><div class="btn fantasma" style="padding:4px 10px; font-size:10px">Verificar</div></td>
+                </tr>
+                <tr>
+                  <td><div class="barra-celda" style="width:90px"></div></td>
+                  <td><span class="estado-pill neutro">costos</span></td>
+                  <td><span class="estado-pill warn">invalidado por edición <span class="marca">2</span></span></td>
+                  <td style="font-family:var(--mono)">hoy</td>
+                  <td><div class="btn fantasma" style="padding:4px 10px; font-size:10px">Verificar</div></td>
+                </tr>
+                <tr>
+                  <td><div class="barra-celda" style="width:130px"></div></td>
+                  <td><span class="estado-pill neutro">contacto</span></td>
+                  <td><span class="estado-pill warn">&gt; 90 días</span></td>
+                  <td style="font-family:var(--mono)">12 jul</td>
+                  <td><div class="btn fantasma" style="padding:4px 10px; font-size:10px">Verificar</div></td>
+                </tr>
+              </table>
+              <div class="caja" style="border-color:var(--azul); margin-top:12px">
+                <h5>Registrar verificación — grupo "costos" <span class="marca">3</span></h5>
+                <div class="fila" style="gap:8px; flex-wrap:wrap">
+                  <div class="b" style="flex:1; min-width:120px; padding:6px 9px"><span class="etiqueta">Fuente (catálogo)</span><div class="linea c80" style="margin:3px 0 0"></div></div>
+                  <div class="b" style="flex:1; min-width:120px; padding:6px 9px"><span class="etiqueta">Resultado</span><div style="font-size:10px; margin-top:3px">confirmado ▾</div></div>
+                </div>
+                <div class="fila" style="gap:8px; margin-top:8px; flex-wrap:wrap">
+                  <div class="b" style="flex:1.5; min-width:150px; padding:6px 9px"><span class="etiqueta">Evidencia (captura / oficio / nota telefónica)</span><div class="linea c60" style="margin:3px 0 0"></div></div>
+                  <div class="b" style="min-width:110px; padding:6px 9px"><span class="etiqueta">Clasificación</span><div style="font-size:10px; margin-top:3px">interna ▾ <span class="marca">4</span></div></div>
+                </div>
+                <div class="fila" style="margin-top:10px; gap:8px">
+                  <div class="btn primario" style="padding:7px 16px; font-size:11px">Guardar verificación</div>
+                  <div class="etiqueta">verificado_por: sesión actual · bitácora automática <span class="marca">5</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>La cola trabaja por grupo, no por ficha</b><span>Entra lo que superó 90 días, lo invalidado por edición y lo reportado. El cron (Fase 1B) vence grupos y arma esta cola + resumen semanal.</span> <span class="ref">B4 · §3.4</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Invalidación automática</b><span>Editar un dato dispara la matriz de invalidación (triggers): cambiar un teléfono invalida "contacto" de la dependencia y de sus trámites; cambiar la dependencia de un trámite invalida ubicación, contacto y horarios. La ficha vuelve a cola sola.</span> <span class="ref">M20</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Verificar = fuente + resultado + evidencia</b><span>Cada verificación registra fuente del catálogo, snapshot del valor confirmado, resultado (confirmado / cambio detectado / conflicto / no localizable) y responsable. Sin fuente no se puede guardar.</span> <span class="ref">B2 · §2.2</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Evidencias privadas por defecto</b><span>Clasificadas interna/publicable; si contiene datos personales, el flag activa retención y acceso restringido automáticamente (trigger). Tablas específicas por entidad, FK real, sin polimorfismo.</span> <span class="ref">B7 · M14</span></div></div>
+        <div class="nota"><span class="marca">5</span><div><b>Identidad única, bitácora siempre</b><span><code>admin_usuarios.id = auth.users.id</code>: quien firma la sesión, quien autoriza por rol y quien queda como autor en bitácora son la misma identidad. Toda escritura pasa por <code>requireAdmin()</code> y registra en <code>admin_bitacora</code>.</span> <span class="ref">B9 · B3 · M17-7</span></div></div>
+      </div>
+    </div>
+    <p class="nota-pie"><b>Publicar tiene puerta propia:</b> el botón "Publicar" de un trámite se habilita solo cuando sus grupos editoriales obligatorios (<code>grupos_obligatorios</code>, configurables por trámite) tienen verificación vigente. La preparación comercial (representación, honorarios) no bloquea publicar — solo bloquea activar el CTA. <span class="ref" style="font-family:var(--mono); font-size:11px; color:var(--azul)">B8</span></p>
+  </section>
+
+  <!-- ══════════════ 06 AGENTES ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">06</span><span class="fase f2">Fase 2 · tras cierre legal</span></div>
+    <h2>Landing del servicio de agentes</h2>
+    <p class="ruta">/agentes/</p>
+    <p class="intro">Explica el servicio con expectativas correctas: personas reales, precios por trámite, y el límite de canal explícito — WhatsApp coordina, los documentos van por el canal seguro.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <p class="titulo-wf">¿Sin tiempo para filas? Un agente hace tu trámite por ti <span class="marca">1</span></p>
+        <div class="linea c90"></div><div class="linea c60"></div>
+        <div class="caja">
+          <h5>Cómo funciona</h5>
+          <div class="fila" style="gap:6px; font-size:10px; flex-wrap:wrap">
+            <span class="chip-wf">1 · Escríbenos</span><span class="chip-wf">2 · Carta poder</span><span class="chip-wf">3 · Documentos por canal seguro</span><span class="chip-wf">4 · Entrega</span>
+          </div>
+        </div>
+        <div class="caja">
+          <h5>Trámites disponibles y precio <span class="marca">2</span></h5>
+          <table class="tabla-wf">
+            <tr><td><div class="barra-celda" style="width:100px"></div></td><td style="text-align:right; font-family:var(--mono)">desde $X</td></tr>
+            <tr><td><div class="barra-celda" style="width:80px"></div></td><td style="text-align:right; font-family:var(--mono)">desde $X</td></tr>
+            <tr><td><div class="barra-celda" style="width:120px"></div></td><td style="text-align:right"><span class="estado-pill warn">próximamente</span></td></tr>
+          </table>
+        </div>
+        <div class="aviso">Los documentos NUNCA se envían por WhatsApp: te daremos un enlace seguro de un solo uso. <span class="marca">3</span></div>
+        <div class="btn wa">💬 Iniciar por WhatsApp</div>
+        <div class="caja gris" style="font-size:10px">
+          <h5>Transparencia <span class="marca">4</span></h5>
+          <div class="linea c90"></div><div class="linea c80"></div>
+          <div class="etiqueta">reembolsos · tiempos no garantizados · aviso de privacidad · términos</div>
+        </div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>Agentes = personas</b><span>El copy deja claro que son gestores humanos del equipo, no IA ni intermediarios anónimos. Disclaimer de independencia con revisión jurídica específica donde se ofrece gestoría.</span> <span class="ref">§0 nota · §1.1</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Solo trámites con CTA activo</b><span>La lista sale de los trámites con preparación comercial completa: representación con ambos controles vigentes (operativo + jurídico), honorario vigente en <code>costos_tramite</code>, términos y canal seguro. El resto aparece "próximamente" o no aparece.</span> <span class="ref">M11 · M5 · B8</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Regla de canal, visible para el usuario</b><span>WhatsApp = coordinación. La landing fija la expectativa desde antes del primer mensaje: INE, CURP y comprobantes solo por el enlace de carga. Un operador que reciba un documento por WhatsApp lo elimina y lo registra como incidente.</span> <span class="ref">B1 · §5.3</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Legal a la vista</b><span>Alcance del servicio, política de reembolso (rechazo por causa del ciudadano vs. de la autoridad), tiempos no garantizados, aviso de privacidad simplificado con encargados (Supabase, Vercel, Meta, pagos).</span> <span class="ref">§1.2</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 07 CARGA ══════════════ -->
+  <section class="pantalla">
+    <div class="eyebrow"><span class="tag">07</span><span class="fase f2">Fase 2 · proyecto transaccional</span></div>
+    <h2>Canal seguro de carga de documentos</h2>
+    <p class="ruta">/carga/[token]</p>
+    <p class="intro">La única puerta de entrada de documentos personales. El agente genera el enlace desde su flujo; el ciudadano lo recibe por WhatsApp y sube exactamente lo autorizado, una sola vez.</p>
+    <div class="duo">
+      <div class="telefono wf">
+        <div class="muesca"></div>
+        <div class="navbar-wf"><div class="logo"></div><div class="menu"><i></i><i></i><i></i></div></div>
+        <p class="titulo-wf">Sube tus documentos <span class="marca">1</span></p>
+        <div class="etiqueta">Solicitud #GSJ-·· · enlace válido por 24 h · un solo uso</div>
+        <div class="caja" style="border-color:var(--ambar); background:var(--ambar-tint)">
+          <h5 style="color:var(--ambar)">Aviso de privacidad simplificado <span class="marca">2</span></h5>
+          <div class="linea c90"></div><div class="linea c80"></div>
+          <div class="check-linea"><span class="cb"></span><span style="font-size:10.5px">Acepto el aviso de privacidad (v. 2026-1)</span></div>
+        </div>
+        <div class="caja">
+          <h5>Documentos solicitados <span class="marca">3</span></h5>
+          <div class="b2" style="padding:12px; text-align:center; border-style:dashed; margin:6px 0">
+            <b style="font-size:11px">INE (frente y reverso)</b>
+            <div class="etiqueta">JPG / PNG / PDF · máx 10 MB</div>
+          </div>
+          <div class="b2" style="padding:12px; text-align:center; border-style:dashed; margin:6px 0">
+            <b style="font-size:11px">Comprobante de domicilio</b>
+            <div class="etiqueta">JPG / PNG / PDF · máx 10 MB</div>
+          </div>
+          <div class="etiqueta" style="color:var(--rojo)">solo estos tipos — sin campo "otro"</div>
+        </div>
+        <div class="btn primario">Enviar documentos</div>
+        <div class="caja gris" style="text-align:center">
+          <span class="estado-pill ok">✓ Recibido — en revisión</span>
+          <div class="etiqueta" style="margin-top:4px">estado posterior: subido → validado / rechazado <span class="marca">4</span></div>
+        </div>
+        <div class="caja" style="border-color:var(--rojo); background:var(--rojo-tint); text-align:center">
+          <b style="font-size:11px; color:var(--rojo)">Este enlace no está disponible <span class="marca">5</span></b>
+          <div class="etiqueta">misma respuesta si es inválido, expirado o ya usado</div>
+        </div>
+      </div>
+      <div class="anotaciones">
+        <div class="nota"><span class="marca">1</span><div><b>Token de un solo uso</b><span>≥ 128 bits de entropía; en BD solo su hash. Caducidad corta, revocable, marcado atómico contra reutilización concurrente, rate limiting. Vinculado a: solicitud + tipo documental + ruta exacta. Sin datos personales en URL, nombres de archivo ni logs (objetos = UUID).</span> <span class="ref">B6 · M22</span></div></div>
+        <div class="nota"><span class="marca">2</span><div><b>Consentimiento versionado</b><span>Aviso simplificado en el punto de captura; la aceptación se guarda en <code>consentimientos</code> con la versión exacta. La solicitud lleva snapshot inmutable del trámite (nombre, precio, representación, versión de términos) — sin FK entre proyectos.</span> <span class="ref">§5.3 · B6</span></div></div>
+        <div class="nota"><span class="marca">3</span><div><b>Lista cerrada de tipos</b><span>Solo los tipos documentales autorizados para esta solicitud. Validación real del archivo (magic bytes, no extensión), límites de tamaño y MIME impuestos por el bucket.</span> <span class="ref">M8 · M23</span></div></div>
+        <div class="nota"><span class="marca">4</span><div><b>Cuarentena fail-closed</b><span>Todo archivo queda en cuarentena hasta validarse; los operadores no pueden descargar antes del estado <code>validado</code>. Sin escaneo disponible, el archivo espera. Cifrados o no inspeccionables → rechazo y eliminación segura. Pruebas: EICAR y MIME falsificado.</span> <span class="ref">M23</span></div></div>
+        <div class="nota"><span class="marca">5</span><div><b>Respuesta idéntica ante token malo</b><span>Inválido, expirado o usado devuelven exactamente la misma pantalla: la ruta no revela si existen otros tokens o solicitudes.</span> <span class="ref">M22</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footnotes">
+    <span><b>Alcance.</b> Wireframes de estructura y comportamiento, no de identidad visual. El diseño final usa el sistema existente de guiasanjuan.mx (temas claro/oscuro, tipografía ≥ 17px en fichas, controles ≥ 44px, WCAG 2.2 AA con pruebas automáticas y manuales).</span>
+    <span><b>Puertas vigentes (v4).</b> Nada de lo público se publica sin: pruebas M17 10/10, RLS-1/RLS-2 aprobadas, grupos editoriales verificados, antigüedad por sección visible y <code>propuestas</code> regularizada. Las pantallas de Fase 2 (06–07) no se construyen hasta cerrar B6 y las precondiciones jurídicas.</span>
+    <span><b>Fuente.</b> Derivado de PLAN.md v4 (2026-07-12) y del documento de flujo (FLUJO.html); ante cualquier diferencia, manda el plan.</span>
+  </div>
+
+</div>
+
+</body>
+</html>

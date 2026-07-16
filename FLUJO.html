@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flujo del proyecto — Guía San Juan</title>
+<style>
+  :root{color-scheme:light dark}
+  body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}
+  img{max-width:100%}
+</style>
+<style>
+  :root{
+    --paper:#f6f7f8;
+    --surface:#ffffff;
+    --ink:#182230;
+    --ink-soft:#4a5568;
+    --line:#d9dee5;
+    --azul:#2456a6;
+    --azul-deep:#16345c;
+    --azul-tint:#e8eef8;
+    --verde:#1f8a5b;
+    --verde-tint:#e6f4ec;
+    --ambar:#a97614;
+    --ambar-tint:#faf3e2;
+    --gris-tint:#eef0f3;
+    --mono:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;
+    --serif:'Spectral',Georgia,'Times New Roman',serif;
+    --sans:'Hanken Grotesk',system-ui,'Segoe UI',Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0f1520;
+      --surface:#182233;
+      --ink:#e9edf3;
+      --ink-soft:#a6b1c2;
+      --line:#2c3950;
+      --azul:#84aae4;
+      --azul-deep:#b9d0f0;
+      --azul-tint:#1d2c45;
+      --verde:#5cc294;
+      --verde-tint:#173328;
+      --ambar:#d9a94e;
+      --ambar-tint:#332a15;
+      --gris-tint:#1e2839;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f6f7f8; --surface:#ffffff; --ink:#182230; --ink-soft:#4a5568;
+    --line:#d9dee5; --azul:#2456a6; --azul-deep:#16345c; --azul-tint:#e8eef8;
+    --verde:#1f8a5b; --verde-tint:#e6f4ec; --ambar:#a97614; --ambar-tint:#faf3e2;
+    --gris-tint:#eef0f3;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1520; --surface:#182233; --ink:#e9edf3; --ink-soft:#a6b1c2;
+    --line:#2c3950; --azul:#84aae4; --azul-deep:#b9d0f0; --azul-tint:#1d2c45;
+    --verde:#5cc294; --verde-tint:#173328; --ambar:#d9a94e; --ambar-tint:#332a15;
+    --gris-tint:#1e2839;
+  }
+
+  html{background:var(--paper)}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--paper);
+    line-height:1.55; margin:0; padding:0 20px 80px;
+  }
+  .page{max-width:1080px; margin:0 auto}
+
+  /* ---------- encabezado ---------- */
+  header.masthead{padding:56px 0 8px; border-bottom:3px solid var(--azul); margin-bottom:8px}
+  .masthead .kicker{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+    color:var(--azul); margin:0 0 10px;
+  }
+  .masthead h1{
+    font-family:var(--serif); font-weight:600; font-size:clamp(30px,5vw,44px);
+    line-height:1.12; margin:0 0 12px; text-wrap:balance;
+  }
+  .masthead p.lede{max-width:62ch; color:var(--ink-soft); font-size:17px; margin:0 0 20px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 28px}
+  .chip{
+    font-size:12.5px; font-weight:600; padding:5px 12px; border-radius:99px;
+    background:var(--azul-tint); color:var(--azul-deep); border:1px solid var(--line);
+  }
+  .chip.warn{background:var(--ambar-tint); color:var(--ambar)}
+
+  /* ---------- secciones ---------- */
+  section{margin:52px 0 0}
+  .eyebrow{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:6px;
+  }
+  .eyebrow .tag{
+    font-family:var(--mono); font-size:12px; color:var(--azul); font-weight:600;
+  }
+  section h2{
+    font-family:var(--serif); font-weight:600; font-size:clamp(22px,3vw,28px);
+    margin:0 0 6px; text-wrap:balance;
+  }
+  section > p.intro{color:var(--ink-soft); max-width:68ch; margin:0 0 22px; font-size:15.5px}
+
+  /* ---------- pilares ---------- */
+  .pillars{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0; align-items:stretch}
+  .pillar{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:20px 22px; display:flex; flex-direction:column; gap:6px;
+  }
+  .pillar b{font-size:16.5px}
+  .pillar span{font-size:14px; color:var(--ink-soft)}
+  .pillar .role{
+    font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--azul); margin-bottom:2px;
+  }
+  .flow-arrow{
+    align-self:center; padding:0 10px; color:var(--azul); font-size:22px; user-select:none;
+  }
+  @media (max-width:760px){
+    .pillars{grid-template-columns:1fr}
+    .flow-arrow{transform:rotate(90deg); padding:2px 0; text-align:center}
+  }
+
+  /* ---------- mapa del sitio ---------- */
+  .sitemap{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:10px 0; overflow-x:auto;
+  }
+  .sitemap table{border-collapse:collapse; width:100%; min-width:640px}
+  .sitemap td{padding:9px 18px; border-top:1px solid var(--line); vertical-align:top; font-size:14.5px}
+  .sitemap tr:first-child td{border-top:none}
+  .sitemap td.url{font-family:var(--mono); font-size:13px; white-space:nowrap; color:var(--azul-deep); width:34%}
+  .sitemap td.url .indent{color:var(--line)}
+  .sitemap td.desc{color:var(--ink-soft)}
+  .sitemap tr.key td{background:var(--azul-tint)}
+  .sitemap tr.key td.desc b{color:var(--ink)}
+  .badge{
+    display:inline-block; font-family:var(--sans); font-size:11px; font-weight:700;
+    padding:1.5px 8px; border-radius:99px; margin-left:8px; vertical-align:1px;
+  }
+  .badge.seo{background:var(--azul); color:var(--paper)}
+  .badge.negocio{background:var(--verde-tint); color:var(--verde); border:1px solid var(--verde)}
+  .badge.legal{background:var(--ambar-tint); color:var(--ambar); border:1px solid var(--ambar)}
+
+  /* ---------- cadena de pasos (journey) ---------- */
+  .steps{display:flex; flex-direction:column; gap:0; counter-reset:paso}
+  .step{
+    display:grid; grid-template-columns:44px 1fr; gap:0 18px; position:relative;
+    padding:0 0 26px;
+  }
+  .step::before{
+    counter-increment:paso; content:counter(paso);
+    grid-row:1 / span 2; width:34px; height:34px; border-radius:50%;
+    background:var(--azul); color:var(--paper); font-weight:700; font-size:15px;
+    display:flex; align-items:center; justify-content:center; z-index:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .step::after{
+    content:''; position:absolute; left:16.5px; top:34px; bottom:0;
+    border-left:2px solid var(--line);
+  }
+  .step:last-child::after{display:none}
+  .step h3{margin:5px 0 4px; font-size:16.5px; font-weight:700}
+  .step p{margin:0; grid-column:2; color:var(--ink-soft); font-size:14.5px; max-width:66ch}
+  .step .ej{
+    grid-column:2; margin-top:8px; font-family:var(--mono); font-size:12.5px;
+    background:var(--gris-tint); border:1px solid var(--line); border-radius:6px;
+    padding:8px 12px; color:var(--ink); width:fit-content; max-width:100%;
+  }
+
+  /* bifurcación */
+  .branch{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:6px 0 0 62px;
+  }
+  .branch .opt{
+    border-radius:10px; padding:16px 18px; font-size:14.5px; border:1px solid var(--line);
+  }
+  .branch .opt h4{margin:0 0 6px; font-size:15px}
+  .branch .opt p{margin:0; color:var(--ink-soft)}
+  .branch .opt.solo{background:var(--surface)}
+  .branch .opt.agente{background:var(--verde-tint); border-color:var(--verde)}
+  .branch .opt.agente h4{color:var(--verde)}
+  .branch .opt .nota{display:block; margin-top:8px; font-size:12.5px; font-weight:600}
+  @media (max-width:700px){
+    .branch{grid-template-columns:1fr; margin-left:0}
+  }
+
+  /* ---------- carriles servicio de agentes ---------- */
+  .lanes{display:flex; flex-direction:column; gap:14px}
+  .lane{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    display:grid; grid-template-columns:150px 1fr; overflow:hidden;
+  }
+  .lane .who{
+    padding:16px; background:var(--gris-tint); border-right:1px solid var(--line);
+    display:flex; flex-direction:column; gap:2px; justify-content:center;
+  }
+  .lane .who b{font-size:14.5px}
+  .lane .who span{font-size:12px; color:var(--ink-soft)}
+  .lane .acts{display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:14px 16px}
+  .act{
+    font-size:13px; font-weight:600; padding:7px 12px; border-radius:8px;
+    background:var(--azul-tint); color:var(--azul-deep); border:1px solid var(--line);
+  }
+  .act.wa{background:var(--verde-tint); color:var(--verde); border-color:var(--verde)}
+  .act.legal{background:var(--ambar-tint); color:var(--ambar); border-color:var(--ambar)}
+  .act.final{background:var(--azul); color:var(--paper); border-color:var(--azul)}
+  .acts .sep{color:var(--ink-soft); user-select:none}
+  @media (max-width:640px){
+    .lane{grid-template-columns:1fr}
+    .lane .who{border-right:none; border-bottom:1px solid var(--line); flex-direction:row; align-items:baseline; gap:10px}
+  }
+
+  /* ---------- arquitectura ---------- */
+  .arch{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .arch .box{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:20px 22px;
+  }
+  .arch .box.aislado{border:1.5px dashed var(--ambar)}
+  .arch h3{margin:0 0 4px; font-size:16px}
+  .arch .sub{font-family:var(--mono); font-size:11.5px; color:var(--azul); text-transform:uppercase; letter-spacing:.06em}
+  .arch ul{margin:10px 0 0; padding-left:18px; color:var(--ink-soft); font-size:14px}
+  .arch li{margin:4px 0}
+  .arch li b{color:var(--ink)}
+  .pipe{
+    grid-column:1 / -1; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:var(--azul-tint); border:1px solid var(--line); border-radius:10px;
+    padding:14px 18px; font-size:13.5px; font-weight:600; color:var(--azul-deep);
+  }
+  .pipe .mono{font-family:var(--mono); font-weight:400; font-size:12.5px}
+  @media (max-width:760px){ .arch{grid-template-columns:1fr} }
+
+  /* ---------- fases ---------- */
+  .fases{display:flex; flex-direction:column}
+  .fase{
+    display:grid; grid-template-columns:96px 1fr; gap:0 20px; position:relative; padding-bottom:30px;
+  }
+  .fase::after{
+    content:''; position:absolute; left:47px; top:44px; bottom:4px; border-left:2px solid var(--line);
+  }
+  .fase:last-child::after{display:none}
+  .fase .num{
+    width:96px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-weight:600; font-size:16px;
+    background:var(--surface); border:1px solid var(--line); z-index:1;
+  }
+  .fase.actual .num{background:var(--azul); color:var(--paper); border-color:var(--azul)}
+  .fase h3{margin:7px 0 4px; font-size:17px}
+  .fase h3 .estado{font-size:12px; font-weight:700; color:var(--azul); margin-left:8px; text-transform:uppercase; letter-spacing:.06em}
+  .fase p{margin:0 0 8px; color:var(--ink-soft); font-size:14.5px; max-width:70ch}
+  .fase .salida{
+    font-size:13px; background:var(--gris-tint); border:1px solid var(--line);
+    border-radius:6px; padding:8px 12px; width:fit-content; max-width:100%;
+  }
+  .fase .salida b{color:var(--azul)}
+  @media (max-width:600px){
+    .fase{grid-template-columns:1fr; gap:8px}
+    .fase::after{display:none}
+    .fase .num{width:88px}
+  }
+
+  /* ---------- notas al pie ---------- */
+  .footnotes{
+    margin-top:56px; border-top:1px solid var(--line); padding-top:18px;
+    font-size:13px; color:var(--ink-soft); display:grid; gap:6px; max-width:78ch;
+  }
+  .footnotes b{color:var(--ink)}
+
+  @media (prefers-reduced-motion: no-preference){
+    section{animation:up .5s ease both}
+    @keyframes up{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="kicker">Guía San Juan · Documento de trabajo</p>
+    <h1>Cómo funcionará el proyecto, de punta a punta</h1>
+    <p class="lede">
+      Versión visual del <span style="font-family:var(--mono); font-size:.9em">PLAN.md</span> (v4 — dictamen vigente: <b>GO para continuar Fase 1A</b>; migraciones esperan B7-B9 y la publicación espera las pruebas RLS y la separación editorial/comercial):
+      qué páginas existirán, cómo llega y qué hace el ciudadano, cómo opera el servicio de
+      agentes (personas, no IA), de dónde salen los datos y en qué orden se construye todo.
+      El camino crítico es <b>confianza → seguridad → operación</b>; la automatización y la adquisición vienen después.
+    </p>
+    <div class="chips">
+      <span class="chip">Proyecto de Trinium, independiente del gobierno</span>
+      <span class="chip">Agentes = gestores humanos</span>
+      <span class="chip">Equipo propio primero, red externa después</span>
+      <span class="chip warn">Legal y canal seguro antes de cobrar</span>
+      <span class="chip warn">CTA de gestoría oculto hasta que el servicio opere</span>
+    </div>
+  </header>
+
+  <!-- 1 · MODELO -->
+  <section>
+    <div class="eyebrow"><span class="tag">01</span></div>
+    <h2>El modelo en una línea</h2>
+    <p class="intro">Cada pieza alimenta a la siguiente: el contenido gratuito atrae tráfico, una parte de ese tráfico contrata la gestoría, y todo el sitio funciona como demo viviente de Trinium.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="role">Atrae · gratis</span>
+        <b>Contenido útil</b>
+        <span>Trámites, dependencias y directorio telefónico, optimizados para lo que la gente ya busca en Google.</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="pillar">
+        <span class="role">Monetiza · servicio</span>
+        <b>Agentes personales</b>
+        <span>Personas del equipo que rentan su tiempo para hacer el trámite por el ciudadano, contratadas por WhatsApp.</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="pillar">
+        <span class="role">Proyecta · leads</span>
+        <b>Embudo Trinium</b>
+        <span>"Desarrollado por Trinium" + caso de estudio: negocios y dependencias que ven el sitio piden uno igual.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · MAPA -->
+  <section>
+    <div class="eyebrow"><span class="tag">02</span></div>
+    <h2>Mapa del sitio</h2>
+    <p class="intro">URLs en español, sin acentos, inmutables. La página de trámite es el activo SEO principal del proyecto.</p>
+    <div class="sitemap">
+      <table>
+        <tr><td class="url">/</td><td class="desc">Home con buscador prominente: <b>"¿Qué trámite necesitas?"</b></td></tr>
+        <tr><td class="url">/dependencias/ <span class="indent">→</span> [slug]/</td><td class="desc">Ficha de cada dependencia: qué hace, teléfonos, horarios, mapa, trámites que gestiona</td></tr>
+        <tr class="key"><td class="url">/tramites/ <span class="indent">→</span> [slug]/</td><td class="desc"><b>La página clave</b>: requisitos, costo, dónde, horarios, FAQ + CTA de agente <span class="badge seo">SEO</span><span class="badge negocio">$ Negocio</span></td></tr>
+        <tr><td class="url">/directorio/</td><td class="desc">Directorio telefónico completo, buscable, con botones que marcan directo</td></tr>
+        <tr><td class="url">/agentes/ <span class="indent">→</span> solicitar/</td><td class="desc">Landing del servicio de gestoría: precios, cómo funciona, contratación <span class="badge negocio">$ Negocio</span></td></tr>
+        <tr><td class="url">/guias/ <span class="indent">→</span> [slug]/</td><td class="desc">Contenido long-tail: "cómo sacar tu acta de nacimiento en SJR" <span class="badge seo">SEO</span></td></tr>
+        <tr><td class="url">/acerca-de/ · /privacidad/ · /terminos/</td><td class="desc">Independencia del municipio, aviso LFPDPPP, alcance del servicio <span class="badge legal">Legal</span></td></tr>
+        <tr><td class="url">/desarrollado-por-trinium/</td><td class="desc">Caso de estudio y puente de leads hacia Trinium</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3 · JOURNEY CIUDADANO -->
+  <section>
+    <div class="eyebrow"><span class="tag">03</span></div>
+    <h2>El recorrido del ciudadano</h2>
+    <p class="intro">Usuario típico: adulto mayor o persona con prisa, desde el celular. Cada paso está diseñado para resolverle en el menor número de toques.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>Busca en Google o recibe un link por WhatsApp</h3>
+        <p>Búsquedas con intención local exacta. El título y H1 de cada página las reflejan literalmente; los datos estructurados generan rich snippets.</p>
+        <span class="ej">"requisitos licencia de conducir san juan del rio" · "telefono agua potable sjr"</span>
+      </div>
+      <div class="step">
+        <h3>Cae en la ficha del trámite</h3>
+        <p>Qué es → requisitos en checklist → costo y tiempo → dónde se hace (botón de teléfono y "Cómo llegar") → documentos descargables → FAQ. Con aviso visible de proyecto independiente y fecha de última verificación.</p>
+      </div>
+      <div class="step">
+        <h3>Decide cómo resolverlo</h3>
+        <p>La ficha le sirve completa aunque no contrate nada — esa es la confianza que sostiene el negocio.</p>
+        <div class="branch" style="grid-column:2">
+          <div class="opt solo">
+            <h4>Lo hace por su cuenta · gratis</h4>
+            <p>Marca directo con <span style="font-family:var(--mono); font-size:.9em">tel:</span>, abre Google Maps, descarga el machote de carta poder. Objetivo cumplido: volverá y compartirá la ficha.</p>
+          </div>
+          <div class="opt agente">
+            <h4>"¿No tienes tiempo? Un agente lo hace por ti desde $X"</h4>
+            <p>Un toque abre WhatsApp con mensaje precargado que ya incluye el nombre del trámite. Sin formularios.</p>
+            <span class="nota">→ continúa en el flujo de gestoría (sección 04)</span>
+            <span class="nota" style="color:var(--ambar)">Este CTA permanece oculto por trámite hasta que el servicio sea operable: representación confirmada, precio, términos, aviso de privacidad y canal seguro.</span>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <h3>Comparte la ficha</h3>
+        <p>En México WhatsApp es el canal de distribución orgánica principal: cada ficha tiene Open Graph con imagen propia para verse perfecta al compartirse.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · SERVICIO DE AGENTES -->
+  <section>
+    <div class="eyebrow"><span class="tag">04</span></div>
+    <h2>Servicio de agentes: quién hace qué</h2>
+    <p class="intro">Fase 2: coordinación manual por WhatsApp, operada por el equipo propio — pero <b>WhatsApp nunca es archivo documental</b>: los documentos viajan solo por el canal seguro del proyecto transaccional aislado, que debe existir antes del primer expediente real. La plataforma completa (estatus, pagos) se construye después, si la demanda lo justifica.</p>
+    <div class="lanes">
+      <div class="lane">
+        <div class="who"><b>Ciudadano</b><span>desde su celular</span></div>
+        <div class="acts">
+          <span class="act wa">Toca el CTA en la ficha</span><span class="sep">→</span>
+          <span class="act wa">Coordina por WhatsApp (sin enviar documentos)</span><span class="sep">→</span>
+          <span class="act legal">Firma carta poder + acepta aviso de privacidad</span><span class="sep">→</span>
+          <span class="act legal">Sube documentos por canal seguro (link de un solo uso)</span><span class="sep">→</span>
+          <span class="act">Paga</span>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="who"><b>Equipo propio</b><span>agentes gestores</span></div>
+        <div class="acts">
+          <span class="act">Recibe y asigna la solicitud</span><span class="sep">→</span>
+          <span class="act legal">Verifica tipo de poder que exige el trámite</span><span class="sep">→</span>
+          <span class="act">Hace el trámite en la dependencia</span><span class="sep">→</span>
+          <span class="act final">Entrega el resultado</span><span class="sep">→</span>
+          <span class="act legal">Borra los documentos del ciudadano</span>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="who"><b>El sitio</b><span>soporte, no plataforma</span></div>
+        <div class="acts">
+          <span class="act">Muestra precio por trámite (<span style="font-family:var(--mono)">precio_agente</span>)</span>
+          <span class="act">Precarga el mensaje de WhatsApp</span>
+          <span class="act">Publica términos, privacidad y machotes</span>
+          <span class="act">Mide clics del CTA por trámite</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin:14px 0 0; font-size:13.5px; color:var(--ink-soft); max-width:78ch">
+      <b style="color:var(--ink)">Futuro (Fase 3):</b> un bot de IA atiende dudas por WhatsApp — requisitos, costos, horarios — respondiendo solo desde la misma base de datos, y pasa la conversación a un humano del equipo cuando hay intención de contratar o no puede resolver.
+    </p>
+  </section>
+
+  <!-- 5 · DATOS -->
+  <section>
+    <div class="eyebrow"><span class="tag">05</span></div>
+    <h2>De dónde salen los datos</h2>
+    <p class="intro">Dos mundos separados a propósito: el contenido público vive en un proyecto Supabase; los datos personales del servicio de gestoría, en otro totalmente aislado.</p>
+    <div class="arch">
+      <div class="pipe">
+        Editor captura o verifica en /admin
+        <span>→</span> Supabase contenido <span class="mono">(publicado = true, RLS)</span>
+        <span>→</span> revalidatePath / ISR
+        <span>→</span> páginas estáticas + sitemap + JSON-LD
+        <span>→</span> Google y WhatsApp
+      </div>
+      <div class="box">
+        <span class="sub">Proyecto Supabase · contenido público</span>
+        <h3>El "CMS" ya existente, ampliado</h3>
+        <ul>
+          <li>Tablas: <b>dependencias, tramites, categorias, directorio, guias</b> — estados editoriales (borrador → publicado → vencido) y relaciones con <b>FK reales en todo</b>, incluidas las evidencias (sin polimorfismo)</li>
+          <li><b>Verificación por grupo crítico</b>, con dos preparaciones separadas: la <b>editorial</b> (requisitos, costos, contacto, horarios) publica la ficha; la <b>comercial</b> (representación + jurídico + honorarios) solo activa el CTA</li>
+          <li>Una <b>matriz de invalidación</b> define qué edición vence qué grupo (cambiar un teléfono invalida "contacto" de la dependencia y de sus trámites); la ficha muestra "verificada entre {fecha} y {fecha}" por sección</li>
+          <li>Fuentes, verificaciones, evidencias e historial: <b>privados por defecto</b>; la fecha pública sale por una proyección cerrada probada con usuario anónimo (RLS-1/RLS-2)</li>
+          <li>Admin endurecido <b>antes</b> del CRUD (10 pruebas de aceptación) e identidad administrativa <b>ligada a la autenticación</b> — el autor en bitácora y el rol que autoriza son la misma identidad</li>
+        </ul>
+      </div>
+      <div class="box aislado">
+        <span class="sub" style="color:var(--ambar)">Proyecto Supabase · transaccional (opera desde el inicio de Fase 2)</span>
+        <h3>Datos personales, aislados</h3>
+        <ul>
+          <li>Existe <b>antes del primer expediente real</b>, aunque su interfaz sea manual</li>
+          <li>Credenciales privilegiadas solo en servidor; el cliente recibe una <b>autorización temporal acotada</b> a una solicitud, ruta y operación</li>
+          <li>Carga con <b>token de un solo uso</b>: solo se guarda su hash, caducidad corta, revocable, sin datos personales en URL ni logs, tipos documentales de lista cerrada</li>
+          <li>La solicitud guarda un <b>snapshot inmutable</b> del trámite (nombre, precio, representación, versión de términos) — sin FK entre proyectos</li>
+          <li><b>Retención por categoría</b> con evidencia de eliminación; bitácora de accesos; MFA de operadores</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · FASES -->
+  <section>
+    <div class="eyebrow"><span class="tag">06</span></div>
+    <h2>Orden de construcción</h2>
+    <p class="intro">Camino crítico v2: primero confianza (proveniencia), seguridad (admin, canal de documentos) y operación; la automatización y la adquisición vienen después. Cada fase valida la siguiente.</p>
+    <div class="fases">
+      <div class="fase actual">
+        <span class="num">Fase 1A</span>
+        <div>
+          <h3>Fundación<span class="estado">← ahora</span></h3>
+          <p><b>Endurecer el admin antes de cualquier CRUD</b> (10 pruebas de aceptación) + seguridad perimetral (cabeceras, CSP report-only, rate limiting incluida la tabla <span style="font-family:var(--mono); font-size:.9em">propuestas</span> existente, que también se audita). Definir grupos críticos por trámite y la matriz de invalidación; <b>congelar el modelo cerrando B7-B9</b> (evidencias con FK real, identidad ligada a auth, separación editorial/comercial) y solo entonces migrar. Mientras tanto, la investigación editorial avanza en la <b>plantilla de proveniencia</b>. ~10 dependencias + <b>5 trámites piloto con grupos editoriales verificados</b> (la representación no bloquea). CTA: oculto.</p>
+          <span class="salida"><b>Salida (controlable):</b> pruebas de admin 10/10 · RLS-1 y RLS-2 aprobadas · 5 fichas piloto con grupos editoriales verificados · antigüedad por sección visible · propuestas regularizada · canonical y schema válidos · sitemap aceptado · CWV dentro de presupuesto</span>
+        </div>
+      </div>
+      <div class="fase">
+        <span class="num">Fase 1B</span>
+        <div>
+          <h3>Expansión de contenido</h3>
+          <p>Directorio, buscador del home, expansión a 15–20 trámites con el proceso de verificación ya probado, sitemap y OG dinámicos, cron de fichas vencidas, copy del home post-feria.</p>
+          <span class="salida"><b>Salida:</b> 15–20 trámites con proveniencia · ciclo de verificación operando · WCAG 2.2 AA en fichas</span>
+        </div>
+      </div>
+      <div class="fase">
+        <span class="num">Fase 1C</span>
+        <div>
+          <h3>Asistencia editorial con IA</h3>
+          <p>Solo si 1B midió un cuello de botella real: captura asistida por IA con controles de procedencia (fuente visible por campo, prohibido completar huecos, defensa ante prompt injection, nunca documentos personales) y borradores de guías/FAQs. La IA nunca publica directo.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <span class="num">Fase 2</span>
+        <div>
+          <h3>Gestoría — equipo propio, manual</h3>
+          <p><b>Precondiciones:</b> revisión jurídica con doble control por trámite (confirmación operativa + revisión jurídica, ambas vigentes), mínimo transaccional operativo, ruta <span style="font-family:var(--mono); font-size:.9em">/carga/[token]</span> con tokens de un solo uso, archivos en <b>cuarentena hasta validarse</b> (los operadores no descargan antes), snapshot de solicitud, retención definida y <b>piloto interno con expedientes ficticios + evidencia de borrado</b>. Después: landing /agentes/, CTA activado trámite por trámite, carta poder PDF, respuestas rápidas, answer box y reportes ciudadanos.</p>
+          <span class="salida"><b>Salida (verificable, no "sin incidentes"):</b> controles ejecutados en todos los expedientes de muestra · cero documentos fuera del repositorio autorizado · accesos reconciliados contra expedientes · eliminaciones dentro de SLA · incidentes detectados y atendidos conforme al procedimiento · demanda medida por trámite</span>
+        </div>
+      </div>
+      <div class="fase">
+        <span class="num">Fase 3</span>
+        <div>
+          <h3>Automatizar lo que la demanda justifique</h3>
+          <p>/agentes/solicitar/ con estatus, pagos en línea (Stripe / MercadoPago), <b>monitoreo automático de fuentes oficiales</b> (hash sobre la proveniencia manual que existe desde 1A) y el <b>bot de IA por WhatsApp</b>: reutiliza el motor del answer box, responde solo desde la base (WhatsApp Business API) y escala a humano ante intención de contratar.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <span class="num">Fase 4</span>
+        <div>
+          <h3>PWA / app · red de agentes</h3>
+          <p>PWA con política de caché que no contradiga la frescura (network-first en requisitos/costos, fecha visible de la copia, nunca cachear datos personales); app nativa solo con demanda validada. Si el volumen supera al equipo propio: red de agentes externos con alta verificada, asignación, comisión y calificación.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footnotes">
+    <span><b>Independencia.</b> Todas las fichas llevan el aviso inequívoco: "Guía San Juan es un proyecto de Trinium, independiente del Gobierno Municipal y de las dependencias públicas mencionadas".</span>
+    <span><b>Frescura con evidencia.</b> La verificación es por grupo crítico y la ficha comunica la antigüedad con honestidad: "información crítica verificada entre {fecha} y {fecha}" + fecha por sección. Editar un dato invalida su verificación (matriz de invalidación). Ante fuentes en conflicto no se afirma nada: "dato no confirmado" + vías oficiales.</span>
+    <span><b>Datos personales.</b> NO GO a capturar documentos o datos personales hasta que existan: canal seguro, retención por categoría, procedimiento de incidentes/ARCO y revisión jurídica (LFPDPPP 2025).</span>
+    <span><b>Fuente.</b> Este documento resume PLAN.md v2 (2026-07-12, tras auditoría); ante cualquier diferencia, manda el plan.</span>
+  </div>
+
+</div>
+
+</body>
+</html>
