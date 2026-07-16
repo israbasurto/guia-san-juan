@@ -20,3 +20,6 @@ Thumbs.db
 
 # Supabase CLI
 supabase/.temp/
+
+# Respaldos de datos (incluyen datos personales) — nunca al repo
+respaldos/

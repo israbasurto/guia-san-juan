@@ -400,7 +400,7 @@ Orden invertido respecto al plan v1: primero se corrige la autenticación, despu
 - [ ] Gestión y rotación del service role key. *(Verificado que no llega al bundle — M17-9; falta el procedimiento de rotación documentado.)*
 - [x] Protección específica de las acciones que publican, verifican o revalidan contenido — `updateEstado` exige `requireAdmin({escritura:true})`; patrón obligatorio para toda action futura.
 
-**Pruebas de aceptación (M17)** — "admin endurecido" se acredita con estas pruebas observables, no con la frase. **Acreditación ejecutada 2026-07-16 (TRI-215): 9/10 ✅; falta solo la 10, a cargo de TRI-216.**
+**Pruebas de aceptación (M17)** — "admin endurecido" se acredita con estas pruebas observables, no con la frase. **Acreditación ejecutada 2026-07-16: 10/10 ✅ (TRI-215 pruebas 1-9; TRI-216 prueba 10). Queda como seguimiento operativo, no bloqueante, el simulacro de DR en un proyecto nuevo y una rotación de práctica de la llave.**
 
 | # | Prueba | Pasa si | Estado (2026-07-16) |
 |---|---|---|---|
@@ -413,7 +413,7 @@ Orden invertido respecto al plan v1: primero se corrige la autenticación, despu
 | 7 | Escritura autorizada | Queda registrada en bitácora | ✅ fila en `admin_bitacora` con `admin_id` + acción + timestamp |
 | 8 | Rotación/revocación de sesión | Cierra el acceso de inmediato | ✅ `signOut` revoca el refresh token; `activo=false` corta en la siguiente petición |
 | 9 | Service role key | No aparece en bundle, logs ni respuestas | ✅ ausente de `.next/static` |
-| 10 | Restauración desde respaldo | Probada de verdad, no solo configurada | ⏳ TRI-216 (backups) |
+| 10 | Restauración desde respaldo | Probada de verdad, no solo configurada | ✅ respaldo real + restauración verificada en Postgres aislado (7/7 tablas, 395 filas); ver `docs/operaciones/respaldo-y-restauracion.md`. Simulacro de DR en proyecto nuevo: documentado, pendiente del usuario |
 
 ### 5.2 Sitio informativo
 
@@ -435,7 +435,7 @@ Se mantiene: **Next.js 15 + Supabase + Vercel**, SSG/ISR. El admin (ya endurecid
 - [x] CSP en Report-Only con **periodo y criterio definidos para pasar a enforcement** (p. ej. 2 semanas sin violaciones legítimas); nonce para el script de tema. — *Report-Only desplegada en 1A; enforcement con nonce, puerta en 1B*
 - [x] Rate limiting de **todas las escrituras existentes, incluida `propuestas`**. — server action + tabla `propuestas_intentos` (5 por hora por hash de IP); login limitado por GoTrue
 - [x] Revisión de secretos y de exposición cliente/servidor (qué llega al bundle). — `ADMIN_PASSWORD` eliminado; service role verificada fuera de `.next/static` (M17-9). *Pendiente: quitar `ADMIN_PASSWORD` de Vercel al desplegar.*
-- [ ] **Backups y continuidad**: respaldo del contenido, restauración probada (prueba M17-10), plan de continuidad editorial.
+- [x] **Backups y continuidad**: respaldo del contenido (`scripts/respaldo.mjs`), restauración probada de verdad (prueba M17-10, `scripts/probar-restauracion.mjs`), rotación de service role key y plan de continuidad editorial documentados en `docs/operaciones/respaldo-y-restauracion.md`. *(Pendiente del usuario: simulacro de DR en un proyecto nuevo y una rotación de práctica.)*
 - [ ] Cloudflare: diferido (ver §0) — no es requisito de Fase 1.
 
 **Auditoría de la captura que YA existe (M16)** — el sitio ya trata datos con la tabla `propuestas`; parte del legal mínimo de Fase 1A:

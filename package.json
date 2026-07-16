@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "respaldo": "node scripts/respaldo.mjs",
+    "probar-restauracion": "node scripts/probar-restauracion.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.1",
@@ -15,5 +17,8 @@
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.2.0"
   }
 }
