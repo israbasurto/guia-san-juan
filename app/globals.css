@@ -1579,3 +1579,57 @@ html[data-mood="oscuro"] .prop-badge--rechazada { background: oklch(0.55 0.15 25
 
 html[data-mood="oscuro"] .btn-action--reject { color: oklch(0.72 0.15 25); border-color: oklch(0.55 0.15 25 / 0.35); }
 html[data-mood="oscuro"] .btn-action--reject:hover { background: oklch(0.55 0.15 25 / 0.14); }
+
+/* ============================================================
+   Admin — CRUD de contenido (dependencias, trámites)
+   ============================================================ */
+.admin-nav { display: flex; gap: 4px; flex: 1; justify-content: center; flex-wrap: wrap; }
+.admin-nav-link {
+  padding: 7px 14px; border-radius: 999px; font-size: 14px; font-weight: 600;
+  color: var(--muted); text-decoration: none; transition: background 0.15s, color 0.15s;
+}
+.admin-nav-link:hover { background: var(--bg-alt); color: var(--ink); }
+.admin-nav-link.active { background: oklch(from var(--accent) l c h / 0.14); color: var(--accent-deep); }
+
+.admin-main--narrow { max-width: 780px; }
+.admin-page-head--row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.admin-count { font-size: 0.5em; font-weight: 600; color: var(--muted); vertical-align: middle; }
+.admin-muted { color: var(--muted); }
+.admin-mono { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.92em; }
+.admin-ok { color: oklch(0.55 0.13 150); font-weight: 600; }
+
+.admin-link { color: var(--accent-deep); text-decoration: none; font-weight: 600; font-size: 14px; background: none; border: none; cursor: pointer; padding: 0; }
+.admin-link:hover { text-decoration: underline; }
+.admin-link--danger { color: oklch(0.55 0.16 25); }
+
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-table th, .admin-table td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.admin-table th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--bg-alt); }
+.admin-table tr:last-child td { border-bottom: none; }
+
+.estado-badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid transparent; }
+.estado-borrador    { background: var(--bg-alt); color: var(--muted); border-color: var(--line); }
+.estado-en_revision { background: oklch(0.85 0.11 85 / 0.2); color: oklch(0.5 0.12 80); }
+.estado-publicado   { background: oklch(0.85 0.1 150 / 0.2); color: oklch(0.48 0.12 150); }
+.estado-vencido     { background: oklch(0.8 0.14 55 / 0.2); color: oklch(0.52 0.15 45); }
+.estado-retirado    { background: oklch(0.8 0.13 25 / 0.16); color: oklch(0.52 0.15 25); }
+
+.admin-section { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); }
+.admin-section-title { font-size: 18px; margin-bottom: 14px; }
+.admin-subtitle { font-size: 15px; margin: 20px 0 10px; color: var(--muted); }
+
+.pf-form { display: flex; flex-direction: column; gap: 16px; }
+.admin-inline { display: flex; align-items: center; gap: 10px; }
+.admin-inline--wrap { flex-wrap: wrap; margin-top: 14px; }
+
+.admin-list { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-direction: column; gap: 8px; }
+.admin-list-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
+
+.admin-checks { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.admin-check { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
+.admin-check--comercial { color: oklch(0.55 0.13 45); }
+
+.admin-gate { padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+.admin-gate--ok { background: oklch(0.85 0.1 150 / 0.16); color: oklch(0.45 0.11 150); }
+.admin-gate--no { background: oklch(0.8 0.14 55 / 0.16); color: oklch(0.5 0.15 45); }

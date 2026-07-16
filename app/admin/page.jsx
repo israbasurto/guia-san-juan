@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '../../lib/supabase-admin';
-import { logoutAction } from './actions';
+import AdminChrome from './AdminChrome';
 import ProposalCard from './ProposalCard';
 
 export const dynamic = 'force-dynamic';
@@ -31,27 +31,7 @@ export default async function AdminPage({ searchParams }) {
   const tabCounts = { todas: total, pendiente, aprobada, rechazada };
 
   return (
-    <div className="admin-wrap">
-      <header className="admin-header" id="adminHeader">
-        <div className="admin-header-brand">
-          <span className="brand-mark" style={{ width: 36, height: 36, fontSize: 17 }}>G</span>
-          <span className="admin-header-title">
-            Guía San Juan <span>· Admin</span>
-          </span>
-          {pendiente > 0 && (
-            <span className="admin-header-badge">{pendiente} pendiente{pendiente !== 1 ? 's' : ''}</span>
-          )}
-        </div>
-        <form action={logoutAction}>
-          <button className="admin-logout" type="submit">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
-            </svg>
-            Cerrar sesión
-          </button>
-        </form>
-      </header>
-
+    <AdminChrome>
       <main className="admin-main">
         {/* Page head */}
         <div className="admin-page-head">
@@ -118,6 +98,6 @@ export default async function AdminPage({ searchParams }) {
           </div>
         )}
       </main>
-    </div>
+    </AdminChrome>
   );
 }
