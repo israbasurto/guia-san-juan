@@ -1,6 +1,4 @@
 import ThemeToggle from '../components/ThemeToggle';
-import Countdown from '../components/Countdown';
-import BadgeDays from '../components/BadgeDays';
 import ProposalModal from '../components/ProposalModal';
 import ClientEffects from '../components/ClientEffects';
 
@@ -41,32 +39,6 @@ const jsonLd = [
     },
   },
   {
-    '@context':  'https://schema.org',
-    '@type':     'Event',
-    name:        'Feria San Juan del Río 2026',
-    description: 'Feria anual de San Juan del Río, Querétaro. Artistas, escenarios, actividades y más del 18 al 30 de junio de 2026.',
-    startDate:   '2026-06-18',
-    endDate:     '2026-06-30',
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url:         'https://feria.guiasanjuan.mx',
-    location: {
-      '@type': 'Place',
-      name:    'San Juan del Río',
-      address: {
-        '@type':         'PostalAddress',
-        addressLocality: 'San Juan del Río',
-        addressRegion:   'Querétaro',
-        addressCountry:  'MX',
-      },
-    },
-    organizer: {
-      '@type': 'Organization',
-      name:    'Guía San Juan',
-      url:     SITE_URL,
-    },
-  },
-  {
     '@context':    'https://schema.org',
     '@type':       'TouristDestination',
     name:          'San Juan del Río',
@@ -102,13 +74,12 @@ export default function Home() {
             </span>
           </a>
           <nav className="nav-links" aria-label="Secciones">
-            <a className="navlink" href="#feria">Feria 2026</a>
             <a className="navlink" href="#proyecto">El proyecto</a>
             <a className="navlink" href="#pronto">Muy pronto</a>
           </nav>
           <div className="nav-cta">
-            <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
-              Feria 2026 <span className="arrow">→</span>
+            <a className="btn btn--primary" href="#proyecto">
+              Conoce la guía <span className="arrow">→</span>
             </a>
             <ThemeToggle />
           </div>
@@ -128,8 +99,7 @@ export default function Home() {
             <div className="hero-copy hero-entrance" style={{ animationDelay: '0.1s' }}>
               <span className="hero-badge">
                 <span className="dot"></span>{' '}
-                La Feria 2026 empieza en <BadgeDays /> días —{' '}
-                <b>¡Ya puedes consultarla!</b>
+                Guía digital independiente — <b>hecha en San Juan del Río</b>
               </span>
               <h1>Guía <span className="accentword">San Juan</span></h1>
               <p className="hero-sub">Eventos, lugares y lo mejor de San Juan del Río.</p>
@@ -138,17 +108,16 @@ export default function Home() {
                 y qué eventos no te puedes perder. Todo en un solo lugar, claro y fácil de usar.
               </p>
               <div className="hero-pills">
-                <a className="pill" href="https://feria.guiasanjuan.mx">🎪 Feria 2026</a>
                 <a className="pill" href="#proyecto">📍 Lugares</a>
                 <a className="pill" href="#proyecto">🎶 Eventos</a>
                 <a className="pill" href="#proyecto">🛍️ Comercios</a>
                 <a className="pill" href="#proyecto">🗺️ Rutas</a>
               </div>
               <div className="hero-actions">
-                <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
-                  Consultar Feria San Juan 2026 <span className="arrow">→</span>
+                <a className="btn btn--primary" href="#proyecto">
+                  ¿Qué es Guía San Juan? <span className="arrow">→</span>
                 </a>
-                <a className="btn btn--ghost" href="#proyecto">¿Qué es Guía San Juan?</a>
+                <a className="btn btn--ghost" href="#pronto">Lo que viene</a>
               </div>
               <div className="hero-meta">
                 <div className="item"><b>Gratis</b><span>Toda la info, sin costo</span></div>
@@ -178,45 +147,6 @@ export default function Home() {
                     <span className="t">Puente de la Historia</span>
                     <span className="s">Símbolo de San Juan del Río</span>
                   </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FERIA */}
-        <section className="section" id="feria" aria-label="Feria San Juan del Río 2026">
-          <div className="wrap">
-            <div className="feria on-deep reveal">
-              <div className="feria-grid">
-                <div className="feria-body">
-                  <span className="feria-flag">★ Ya disponible</span>
-                  <h2>Feria San Juan del Río 2026</h2>
-                  <p>Consulta artistas, fechas, escenarios, horarios y actividades en una guía clara, rápida y fácil de usar.</p>
-                  <div className="feria-dates">
-                    <div className="feria-date">
-                      <span className="cal"><b>18</b><span>Jun</span></span>
-                      <span className="txt"><b>Arranca la feria</b><span>Inauguración y primeros eventos</span></span>
-                    </div>
-                    <div className="feria-date">
-                      <span className="cal"><b>30</b><span>Jun</span></span>
-                      <span className="txt"><b>Última noche</b><span>Cierre de actividades</span></span>
-                    </div>
-                  </div>
-                  <Countdown />
-                  <div className="feria-actions">
-                    <a className="btn btn--primary" href="https://feria.guiasanjuan.mx">
-                      Ir a la guía de la feria <span className="arrow">→</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="feria-media">
-                  <img
-                    src="/assets/feria_familia.webp"
-                    alt="Feria San Juan del Río 2026"
-                    className="slot-fill"
-                    style={{ objectFit: 'cover', objectPosition: 'center' }}
-                  />
                 </div>
               </div>
             </div>
@@ -300,7 +230,7 @@ export default function Home() {
             <div className="sec-head reveal">
               <span className="eyebrow">En camino</span>
               <h2>Esto se pone mejor</h2>
-              <p className="lead">Empezamos con la Feria, pero hay mucho más en camino. Sé de los primeros en enterarte.</p>
+              <p className="lead">Estamos construyendo la guía sección por sección. Sé de los primeros en enterarte.</p>
             </div>
             <div className="soon-grid">
               <div className="soon reveal"><span className="n">01</span><span className="label">Lugares para visitar</span><span className="chip">Pronto</span></div>
@@ -311,7 +241,7 @@ export default function Home() {
               <div className="soon reveal"><span className="n">06</span><span className="label">Espacios para negocios sanjuanenses</span><span className="chip">Pronto</span></div>
             </div>
             <p className="soon-note reveal">
-              <span className="pulse"></span> Estamos construyendo esta guía paso a paso. La Feria San Juan 2026 es el primer capítulo.
+              <span className="pulse"></span> Estamos construyendo esta guía paso a paso, con información útil todo el año.
             </p>
             <ProposalModal />
           </div>
@@ -417,7 +347,7 @@ export default function Home() {
             <nav className="footer-nav" aria-label="Secciones del sitio">
               <h4 className="footer-nav-label">Explora</h4>
               <ul>
-                <li><a href="https://feria.guiasanjuan.mx">Feria San Juan 2026</a></li>
+                <li><a href="#top">Inicio</a></li>
                 <li><a href="#proyecto">El proyecto</a></li>
                 <li><a href="#pronto">Muy pronto</a></li>
               </ul>

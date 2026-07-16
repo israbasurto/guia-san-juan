@@ -12,11 +12,10 @@ export const metadata = {
     template: '%s | Guía San Juan',
   },
   description:
-    'Descubre eventos, lugares, restaurantes y negocios en San Juan del Río, Querétaro. Tu guía digital independiente — Feria San Juan 2026, lugares para visitar, comercios locales y más.',
+    'Descubre eventos, lugares, restaurantes y negocios en San Juan del Río, Querétaro. Tu guía digital independiente — lugares para visitar, eventos, comercios locales y más.',
   keywords: [
     'San Juan del Río',
     'San Juan del Río Querétaro',
-    'Feria San Juan del Río 2026',
     'qué hacer en San Juan del Río',
     'eventos San Juan del Río',
     'lugares San Juan del Río',

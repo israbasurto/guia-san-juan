@@ -9,12 +9,6 @@ export default function sitemap() {
       priority:        1,
     },
     {
-      url:             `${SITE_URL}/#feria`,
-      lastModified:    new Date(),
-      changeFrequency: 'weekly',
-      priority:        0.9,
-    },
-    {
       url:             `${SITE_URL}/#proyecto`,
       lastModified:    new Date(),
       changeFrequency: 'monthly',
