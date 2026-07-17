@@ -378,7 +378,7 @@ export default function Home() {
             </div>
           </div>
           <div className="footer-bottom">
-            <span className="footer-copy">© 2026 Guía San Juan · Proyecto ciudadano no oficial</span>
+            <span className="footer-copy">© 2026 Guía San Juan · Proyecto ciudadano no oficial · <a href="/privacidad">Aviso de privacidad</a></span>
             <span className="made">Hecho con <span className="heart" aria-hidden="true">♥</span> por <a href="https://trinium.com.mx/" target="_blank" rel="noopener noreferrer"><b>TRINIUM</b></a></span>
           </div>
         </div>

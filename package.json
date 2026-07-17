@@ -10,7 +10,8 @@
     "respaldo": "node scripts/respaldo.mjs",
     "probar-restauracion": "node scripts/probar-restauracion.mjs",
     "probar-migracion": "node scripts/probar-migracion.mjs",
-    "probar-triggers": "node scripts/probar-triggers.mjs"
+    "probar-triggers": "node scripts/probar-triggers.mjs",
+    "probar-rls": "node scripts/probar-rls.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.1",

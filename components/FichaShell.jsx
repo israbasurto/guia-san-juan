@@ -33,7 +33,9 @@ export default function FichaShell({ children }) {
             <a href="https://trinium.com.mx" target="_blank" rel="noopener noreferrer">Trinium</a>,
             independiente del Gobierno Municipal. No es un sitio oficial.
           </p>
-          <p className="ficha-footer-copy">© 2026 Guía San Juan · Proyecto ciudadano no oficial</p>
+          <p className="ficha-footer-copy">
+            © 2026 Guía San Juan · Proyecto ciudadano no oficial · <a href="/privacidad">Aviso de privacidad</a>
+          </p>
         </div>
       </footer>
     </>

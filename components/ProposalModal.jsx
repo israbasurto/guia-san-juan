@@ -232,7 +232,8 @@ export default function ProposalModal() {
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px', color: 'var(--accent)' }}>
                     <path d="M12 3 5 6v5c0 4.5 3 7.7 7 9 4-1.3 7-4.5 7-9V6l-7-3Z"/><path d="m9 11.5 2 2 4-4"/>
                   </svg>
-                  Revisamos cada propuesta antes de publicarla.
+                  Revisamos cada propuesta antes de publicarla. Al enviar aceptas nuestro{' '}
+                  <a href="/privacidad" target="_blank" rel="noopener noreferrer">aviso de privacidad</a>.
                 </p>
                 <button className="btn btn--primary" type="submit" disabled={submitting}>
                   {submitting ? 'Enviando…' : <>Enviar propuesta <span className="arrow">→</span></>}
