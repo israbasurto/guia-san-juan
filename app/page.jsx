@@ -1,6 +1,7 @@
 import ThemeToggle from '../components/ThemeToggle';
 import ProposalModal from '../components/ProposalModal';
 import ClientEffects from '../components/ClientEffects';
+import Buscador from '../components/Buscador';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://guiasanjuan.mx';
 
@@ -107,6 +108,7 @@ export default function Home() {
                 Encuentra qué hacer este fin de semana, a dónde ir con la familia, qué negocios visitar
                 y qué eventos no te puedes perder. Todo en un solo lugar, claro y fácil de usar.
               </p>
+              <Buscador variant="hero" />
               <div className="hero-pills">
                 <a className="pill" href="#proyecto">📍 Lugares</a>
                 <a className="pill" href="#proyecto">🎶 Eventos</a>

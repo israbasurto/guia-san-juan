@@ -1711,3 +1711,26 @@ html[data-mood="oscuro"] .btn-action--reject:hover { background: oklch(0.55 0.15
 .ficha-footer { border-top: 1px solid var(--line); padding: 28px 0; margin-top: 40px; font-size: 14px; color: var(--muted); }
 .ficha-footer a { color: var(--accent-deep); }
 .ficha-footer-copy { margin-top: 8px; font-size: 13px; }
+
+/* ============================================================
+   Buscador (§4) — client-side sobre el índice de fichas
+   ============================================================ */
+.buscador { position: relative; width: 100%; }
+.buscador--hero { margin: 22px 0 24px; max-width: 560px; }
+.buscador-campo { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 0 16px; transition: border-color 0.15s, box-shadow 0.15s; }
+.buscador-campo:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px oklch(from var(--accent) l c h / 0.12); }
+.buscador-campo svg { flex: none; color: var(--muted); }
+.buscador-input { flex: 1; border: none; background: none; outline: none; padding: 15px 0; font-size: 17px; color: var(--ink); font-family: inherit; min-height: 24px; }
+.buscador-input::placeholder { color: var(--muted); }
+.buscador--hero .buscador-input { padding: 17px 0; font-size: 18px; }
+
+.buscador-resultados { position: absolute; z-index: 40; left: 0; right: 0; top: calc(100% + 8px); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg, 0 20px 50px -20px rgba(0,0,0,0.3)); overflow: hidden; max-height: 60vh; overflow-y: auto; }
+.buscador-item { display: block; padding: 13px 16px; text-decoration: none; color: inherit; border-bottom: 1px solid var(--line-soft); }
+.buscador-item:last-child { border-bottom: none; }
+.buscador-item:hover, .buscador-item:focus { background: var(--bg-alt); }
+.buscador-tipo { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 999px; margin-right: 8px; }
+.buscador-tipo--tramite { background: oklch(from var(--accent) l c h / 0.16); color: var(--accent-deep); }
+.buscador-tipo--dependencia { background: oklch(0.85 0.08 150 / 0.2); color: oklch(0.45 0.11 150); }
+.buscador-nombre { font-weight: 600; font-size: 16px; }
+.buscador-detalle { display: block; color: var(--muted); font-size: 14px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.buscador-vacio { padding: 16px; color: var(--muted); font-size: 14.5px; margin: 0; }

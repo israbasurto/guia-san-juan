@@ -1,5 +1,6 @@
 import { supabase } from '../../lib/supabase';
 import FichaShell from '../../components/FichaShell';
+import Buscador from '../../components/Buscador';
 
 export const revalidate = 3600;
 
@@ -18,6 +19,7 @@ export default async function TramitesIndex() {
       <div className="wrap ficha">
         <h1 className="ficha-h1">Trámites</h1>
         <p className="ficha-resumen">Requisitos, costos y dónde hacer cada trámite en San Juan del Río.</p>
+        <Buscador placeholder="Busca un trámite o dependencia…" />
         {tramites.length === 0 ? (
           <p className="ficha-vacio">Aún no hay trámites publicados. Muy pronto.</p>
         ) : (

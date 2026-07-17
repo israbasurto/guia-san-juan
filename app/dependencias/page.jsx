@@ -1,5 +1,6 @@
 import { supabase } from '../../lib/supabase';
 import FichaShell from '../../components/FichaShell';
+import Buscador from '../../components/Buscador';
 
 export const revalidate = 3600;
 
@@ -18,6 +19,7 @@ export default async function DependenciasIndex() {
       <div className="wrap ficha">
         <h1 className="ficha-h1">Dependencias</h1>
         <p className="ficha-resumen">Teléfonos, horarios y ubicación de las dependencias de San Juan del Río.</p>
+        <Buscador placeholder="Busca una dependencia o trámite…" />
         {deps.length === 0 ? (
           <p className="ficha-vacio">Aún no hay dependencias publicadas. Muy pronto.</p>
         ) : (
