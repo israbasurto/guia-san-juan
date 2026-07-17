@@ -17,6 +17,8 @@ export default function FichaShell({ children }) {
           <div className="ficha-header-cta">
             <a className="navlink" href="/tramites">Trámites</a>
             <a className="navlink" href="/dependencias">Dependencias</a>
+            <a className="navlink" href="/directorio">Directorio</a>
+            <a className="navlink" href="/guias">Guías</a>
             <ThemeToggle />
           </div>
         </div>

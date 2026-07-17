@@ -1734,3 +1734,15 @@ html[data-mood="oscuro"] .btn-action--reject:hover { background: oklch(0.55 0.15
 .buscador-nombre { font-weight: 600; font-size: 16px; }
 .buscador-detalle { display: block; color: var(--muted); font-size: 14px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .buscador-vacio { padding: 16px; color: var(--muted); font-size: 14.5px; margin: 0; }
+
+/* Directorio público y contenido de guías */
+.dir-lista { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.dir-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 12px; padding: 15px 18px; }
+.dir-item-info { display: flex; flex-direction: column; gap: 2px; min-width: 200px; }
+.dir-nombre { font-size: 17px; }
+.dir-cat { font-size: 12.5px; color: var(--accent-deep); text-transform: uppercase; letter-spacing: 0.04em; }
+.dir-dir { font-size: 14px; color: var(--muted); }
+.dir-tels { display: flex; flex-wrap: wrap; gap: 8px; }
+.dir-tel { min-height: 44px; }
+
+.guia-contenido p { margin-bottom: 14px; font-size: 17px; line-height: 1.7; }
