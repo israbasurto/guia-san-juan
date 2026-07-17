@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { supabase } from '../../../lib/supabase';
 import FichaShell from '../../../components/FichaShell';
 import DisclaimerOficial from '../../../components/DisclaimerOficial';
+import Markdown from '../../../components/Markdown';
 import { fechaLarga } from '../../../lib/contenido';
 import { guiaSchema, breadcrumbList } from '../../../lib/schema';
 
@@ -58,7 +59,7 @@ export default async function GuiaPage({ params }) {
 
         {guia.contenido_md && (
           <section className="ficha-sec guia-contenido">
-            {guia.contenido_md.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
+            <Markdown>{guia.contenido_md}</Markdown>
           </section>
         )}
 

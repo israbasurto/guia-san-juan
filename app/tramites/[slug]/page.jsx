@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { supabase } from '../../../lib/supabase';
 import FichaShell from '../../../components/FichaShell';
 import DisclaimerOficial from '../../../components/DisclaimerOficial';
+import Markdown from '../../../components/Markdown';
 import { DIAS, GRUPO_LABEL, fechaLarga, frescura, importeTexto } from '../../../lib/contenido';
 import { tramiteSchema, breadcrumbList } from '../../../lib/schema';
 
@@ -99,7 +100,7 @@ export default async function TramitePage({ params }) {
         {tramite.descripcion_md && (
           <section className="ficha-sec">
             <h2>¿Qué es y para qué sirve?</h2>
-            {tramite.descripcion_md.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
+            <Markdown>{tramite.descripcion_md}</Markdown>
           </section>
         )}
 
