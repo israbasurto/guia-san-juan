@@ -70,6 +70,11 @@ export default async function DependenciaPage({ params }) {
                 <span key={g} className="ficha-chip">{GRUPO_LABEL[g] || g}: {fechaLarga(f)}</span>
               ))}
             </div>
+            {fresca.vencido && (
+              <p className="ficha-frescura-aviso">
+                ⚠ Parte de esta información tiene más de 90 días. Confírmala por teléfono antes de acudir.
+              </p>
+            )}
           </div>
         )}
 

@@ -1763,3 +1763,6 @@ html[data-mood="oscuro"] .btn-action--reject:hover { background: oklch(0.55 0.15
 .md pre { background: var(--bg-alt); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: 0 0 14px; }
 .md pre code { background: none; padding: 0; }
 .md hr { border: none; border-top: 1px solid var(--line); margin: 22px 0; }
+
+/* Aviso de antigüedad en fichas (§3.4) */
+.ficha-frescura-aviso { margin: 12px 0 0; padding: 10px 14px; border-radius: 10px; background: oklch(0.8 0.14 55 / 0.14); color: oklch(0.5 0.14 45); font-size: 14.5px; font-weight: 500; }

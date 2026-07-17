@@ -94,6 +94,11 @@ export default async function TramitePage({ params }) {
                 <span key={g} className="ficha-chip">{GRUPO_LABEL[g] || g}: {fechaLarga(f)}</span>
               ))}
             </div>
+            {fresca.vencido && (
+              <p className="ficha-frescura-aviso">
+                ⚠ Parte de esta información tiene más de 90 días. Te recomendamos confirmarla por teléfono con la dependencia antes de acudir.
+              </p>
+            )}
           </div>
         )}
 
