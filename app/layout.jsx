@@ -1,6 +1,17 @@
 import Script from 'next/script';
+import { Spectral, Hanken_Grotesk } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
+
+// next/font: autohospedadas, sin <link> a Google, sin CLS. Exponen variables CSS
+// que globals.css consume vía --font-display / --font-body.
+const spectral = Spectral({
+  subsets: ['latin'], weight: ['400', '500', '600', '700'], style: ['normal', 'italic'],
+  variable: '--font-spectral', display: 'swap',
+});
+const hanken = Hanken_Grotesk({
+  subsets: ['latin'], variable: '--font-hanken', display: 'swap',
+});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://guiasanjuan.mx';
 
@@ -74,15 +85,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" data-color="azul" data-mood="luminoso" data-font="sans" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="es" data-color="azul" data-mood="luminoso" data-font="sans" className={`${spectral.variable} ${hanken.variable}`} suppressHydrationWarning>
       <body>
         <Script id="theme-init" strategy="beforeInteractive">{`
           document.documentElement.className += ' reveal-on';

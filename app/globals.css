@@ -32,8 +32,8 @@
   --deep-line: oklch(0.38 0.04 255);
 
   /* tipografía */
-  --font-display: "Spectral", Georgia, serif;
-  --font-body:    "Hanken Grotesk", system-ui, sans-serif;
+  --font-display: var(--font-spectral), Georgia, serif;
+  --font-body:    var(--font-hanken), system-ui, sans-serif;
   --title-family: var(--font-body);
   --title-weight: 700;
   --title-spacing: -0.02em;
