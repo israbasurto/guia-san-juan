@@ -8,6 +8,7 @@ const ESTADOS = ['borrador', 'en_revision', 'publicado', 'vencido', 'retirado'];
 const CTA_ESTADOS = ['oculto', 'proximamente', 'activo'];
 const GRUPOS_TRAMITE = ['requisitos', 'costos', 'contacto', 'ubicacion', 'horarios_propios', 'representacion'];
 const GRUPOS_DEPENDENCIA = ['contacto', 'ubicacion', 'horarios'];
+const GRUPOS_DIRECTORIO = ['contacto', 'ubicacion'];
 const RESULTADOS = ['confirmado', 'cambio_detectado', 'conflicto_entre_fuentes', 'no_localizable'];
 const CATEGORIAS_COSTO = ['derecho', 'honorario', 'gasto', 'otro'];
 const TIPOS_COSTO = ['fijo', 'rango', 'desde', 'desconocido'];
@@ -269,4 +270,194 @@ export async function registrarVerificacionTramite(prevState, fd) {
   await registrarBitacora(admin.id, 'verificar', 'tramites', tramite_id, { grupo, resultado });
   revalidatePath(`/admin/tramites/${tramite_id}`);
   return { ok: true };
+}
+
+// ============================================================
+// HORARIOS DE DEPENDENCIA (editar dispara la invalidación del grupo 'horarios')
+// ============================================================
+function diaValido(v) { const n = Number(v); return Number.isInteger(n) && n >= 0 && n <= 6 ? n : null; }
+
+export async function agregarHorarioDependencia(fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const dependencia_id = s(fd, 'dependencia_id');
+  const dia = diaValido(s(fd, 'dia_semana'));
+  const abre = s(fd, 'abre'); const cierra = s(fd, 'cierra');
+  if (!dependencia_id || dia == null || !abre || !cierra) throw new Error('Datos de horario incompletos');
+  const { error } = await supabaseAdmin.from('dependencia_horarios').insert({ dependencia_id, dia_semana: dia, abre, cierra });
+  if (error) throw error;
+  await registrarBitacora(admin.id, 'agregar_horario', 'dependencias', dependencia_id, { dia, abre, cierra });
+  revalidatePath(`/admin/dependencias/${dependencia_id}`);
+}
+
+export async function eliminarHorarioDependencia(fd) {
+  await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const dependencia_id = s(fd, 'dependencia_id');
+  const { error } = await supabaseAdmin.from('dependencia_horarios').delete().eq('id', id);
+  if (error) throw error;
+  revalidatePath(`/admin/dependencias/${dependencia_id}`);
+}
+
+export async function agregarExcepcionDependencia(fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const dependencia_id = s(fd, 'dependencia_id');
+  const fecha = s(fd, 'fecha');
+  const cerrado = fd.get('cerrado') === 'on';
+  if (!dependencia_id || !fecha) throw new Error('Datos de excepción incompletos');
+  const { error } = await supabaseAdmin.from('dependencia_horarios_excepciones').insert({
+    dependencia_id, fecha, motivo: nulo(s(fd, 'motivo')), cerrado,
+    abre: cerrado ? null : nulo(s(fd, 'abre')), cierra: cerrado ? null : nulo(s(fd, 'cierra')),
+  });
+  if (error) throw error;
+  await registrarBitacora(admin.id, 'agregar_excepcion', 'dependencias', dependencia_id, { fecha, cerrado });
+  revalidatePath(`/admin/dependencias/${dependencia_id}`);
+}
+
+export async function eliminarExcepcionDependencia(fd) {
+  await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const dependencia_id = s(fd, 'dependencia_id');
+  const { error } = await supabaseAdmin.from('dependencia_horarios_excepciones').delete().eq('id', id);
+  if (error) throw error;
+  revalidatePath(`/admin/dependencias/${dependencia_id}`);
+}
+
+// ============================================================
+// DIRECTORIO
+// ============================================================
+export async function crearDirectorio(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const nombre = s(fd, 'nombre');
+  if (!nombre || nombre.length > 160) return { error: 'El nombre es obligatorio (máx. 160).' };
+  const { data, error } = await supabaseAdmin.from('directorio')
+    .insert({ nombre, categoria: nulo(s(fd, 'categoria')) }).select('id').single();
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'crear', 'directorio', data.id, { nombre });
+  revalidatePath('/admin/directorio');
+  redirect(`/admin/directorio/${data.id}`);
+}
+
+export async function actualizarDirectorio(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const nombre = s(fd, 'nombre');
+  if (!id) return { error: 'Falta el id.' };
+  if (!nombre) return { error: 'El nombre es obligatorio.' };
+  const { error } = await supabaseAdmin.from('directorio').update({
+    nombre, categoria: nulo(s(fd, 'categoria')), direccion: nulo(s(fd, 'direccion')),
+    actualizado_en: new Date().toISOString(),
+  }).eq('id', id);
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'actualizar', 'directorio', id, null);
+  revalidatePath(`/admin/directorio/${id}`);
+  return { ok: true };
+}
+
+export async function cambiarEstadoDirectorio(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const estado = s(fd, 'estado');
+  if (!ESTADOS.includes(estado)) return { error: 'Estado inválido' };
+  const { error } = await supabaseAdmin.from('directorio').update({ estado }).eq('id', id);
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'cambiar_estado', 'directorio', id, { estado });
+  revalidatePath(`/admin/directorio/${id}`);
+  revalidatePath('/admin/directorio');
+  return { ok: true };
+}
+
+export async function agregarTelefonoDirectorio(fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const directorio_id = s(fd, 'directorio_id'); const numero_ = s(fd, 'numero');
+  if (!directorio_id || !numero_) throw new Error('Datos incompletos');
+  const { error } = await supabaseAdmin.from('directorio_telefonos').insert({
+    directorio_id, numero: numero_, etiqueta: nulo(s(fd, 'etiqueta')), extension: nulo(s(fd, 'extension')),
+  });
+  if (error) throw error;
+  await registrarBitacora(admin.id, 'agregar_telefono', 'directorio', directorio_id, { numero: numero_ });
+  revalidatePath(`/admin/directorio/${directorio_id}`);
+}
+
+export async function eliminarTelefonoDirectorio(fd) {
+  await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const directorio_id = s(fd, 'directorio_id');
+  const { error } = await supabaseAdmin.from('directorio_telefonos').delete().eq('id', id);
+  if (error) throw error;
+  revalidatePath(`/admin/directorio/${directorio_id}`);
+}
+
+export async function registrarVerificacionDirectorio(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const directorio_id = s(fd, 'directorio_id');
+  const grupo = s(fd, 'grupo'); const resultado = s(fd, 'resultado') || 'confirmado';
+  if (!GRUPOS_DIRECTORIO.includes(grupo)) return { error: 'Grupo inválido.' };
+  if (!RESULTADOS.includes(resultado)) return { error: 'Resultado inválido.' };
+  let fuente_id = null;
+  try { fuente_id = await fuenteDesde(fd); } catch (e) { return { error: 'Fuente inválida: ' + e.message }; }
+  const { error } = await supabaseAdmin.from('directorio_verificaciones').insert({
+    directorio_id, grupo, resultado, fuente_id, notas: nulo(s(fd, 'notas')), verificado_por: admin.id,
+  });
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'verificar', 'directorio', directorio_id, { grupo, resultado });
+  revalidatePath(`/admin/directorio/${directorio_id}`);
+  return { ok: true };
+}
+
+// ============================================================
+// GUÍAS
+// ============================================================
+export async function crearGuia(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const titulo = s(fd, 'titulo');
+  if (!titulo || titulo.length > 200) return { error: 'El título es obligatorio (máx. 200).' };
+  const slug = slugify(s(fd, 'slug') || titulo);
+  if (!slug) return { error: 'No se pudo generar un slug válido.' };
+  const { data, error } = await supabaseAdmin.from('guias').insert({ titulo, slug }).select('id').single();
+  if (error) return { error: error.code === '23505' ? 'Ya existe una guía con ese slug.' : error.message };
+  await registrarBitacora(admin.id, 'crear', 'guias', data.id, { titulo, slug });
+  revalidatePath('/admin/guias');
+  redirect(`/admin/guias/${data.id}`);
+}
+
+export async function actualizarGuia(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const titulo = s(fd, 'titulo');
+  if (!id) return { error: 'Falta el id.' };
+  if (!titulo) return { error: 'El título es obligatorio.' };
+  const { error } = await supabaseAdmin.from('guias').update({
+    titulo, resumen: nulo(s(fd, 'resumen')), contenido_md: nulo(s(fd, 'contenido_md')),
+    actualizado_en: new Date().toISOString(),
+  }).eq('id', id);
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'actualizar', 'guias', id, null);
+  revalidatePath(`/admin/guias/${id}`);
+  return { ok: true };
+}
+
+export async function cambiarEstadoGuia(prevState, fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const id = s(fd, 'id'); const estado = s(fd, 'estado');
+  if (!ESTADOS.includes(estado)) return { error: 'Estado inválido' };
+  const patch = { estado };
+  if (estado === 'publicado') patch.publicado_en = new Date().toISOString();
+  const { error } = await supabaseAdmin.from('guias').update(patch).eq('id', id);
+  if (error) return { error: error.message };
+  await registrarBitacora(admin.id, 'cambiar_estado', 'guias', id, { estado });
+  revalidatePath(`/admin/guias/${id}`);
+  revalidatePath('/admin/guias');
+  return { ok: true };
+}
+
+export async function vincularTramiteGuia(fd) {
+  const { admin } = await requireAdmin({ escritura: true });
+  const guia_id = s(fd, 'guia_id'); const tramite_id = s(fd, 'tramite_id');
+  if (!guia_id || !tramite_id) throw new Error('Datos incompletos');
+  const { error } = await supabaseAdmin.from('guias_tramites').insert({ guia_id, tramite_id });
+  if (error && error.code !== '23505') throw error; // 23505 = ya vinculado, ignorar
+  await registrarBitacora(admin.id, 'vincular_tramite', 'guias', guia_id, { tramite_id });
+  revalidatePath(`/admin/guias/${guia_id}`);
+}
+
+export async function desvincularTramiteGuia(fd) {
+  await requireAdmin({ escritura: true });
+  const guia_id = s(fd, 'guia_id'); const tramite_id = s(fd, 'tramite_id');
+  const { error } = await supabaseAdmin.from('guias_tramites').delete().eq('guia_id', guia_id).eq('tramite_id', tramite_id);
+  if (error) throw error;
+  revalidatePath(`/admin/guias/${guia_id}`);
 }

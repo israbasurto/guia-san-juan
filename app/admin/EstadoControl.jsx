@@ -1,11 +1,17 @@
 'use client';
 import { useActionState } from 'react';
-import { cambiarEstadoDependencia, cambiarEstadoTramite } from './contenido-actions';
+import { cambiarEstadoDependencia, cambiarEstadoTramite, cambiarEstadoDirectorio, cambiarEstadoGuia } from './contenido-actions';
 
 const ESTADOS = ['borrador', 'en_revision', 'publicado', 'vencido', 'retirado'];
+const ACCIONES = {
+  dependencia: cambiarEstadoDependencia,
+  tramite: cambiarEstadoTramite,
+  directorio: cambiarEstadoDirectorio,
+  guia: cambiarEstadoGuia,
+};
 
 export default function EstadoControl({ tipo, id, estado }) {
-  const action = tipo === 'tramite' ? cambiarEstadoTramite : cambiarEstadoDependencia;
+  const action = ACCIONES[tipo] ?? cambiarEstadoDependencia;
   const [state, formAction, pending] = useActionState(action, null);
 
   return (

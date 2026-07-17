@@ -5,6 +5,8 @@ const SECCIONES = [
   { href: '/admin', label: 'Propuestas' },
   { href: '/admin/dependencias', label: 'Dependencias' },
   { href: '/admin/tramites', label: 'Trámites' },
+  { href: '/admin/directorio', label: 'Directorio' },
+  { href: '/admin/guias', label: 'Guías' },
 ];
 
 export default function AdminNav() {

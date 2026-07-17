@@ -1,13 +1,19 @@
 'use client';
 import { useActionState } from 'react';
-import { registrarVerificacionDependencia, registrarVerificacionTramite } from './contenido-actions';
+import { registrarVerificacionDependencia, registrarVerificacionTramite, registrarVerificacionDirectorio } from './contenido-actions';
 
 const RESULTADOS = ['confirmado', 'cambio_detectado', 'conflicto_entre_fuentes', 'no_localizable'];
+const ACCIONES = {
+  dependencia: registrarVerificacionDependencia,
+  tramite: registrarVerificacionTramite,
+  directorio: registrarVerificacionDirectorio,
+};
+const ID_FIELD = { dependencia: 'dependencia_id', tramite: 'tramite_id', directorio: 'directorio_id' };
 
-// grupos: lista de grupos válidos para la entidad; idField: 'dependencia_id' | 'tramite_id'
+// grupos: lista de grupos válidos para la entidad
 export default function VerificacionForm({ tipo, id, grupos }) {
-  const action = tipo === 'tramite' ? registrarVerificacionTramite : registrarVerificacionDependencia;
-  const idField = tipo === 'tramite' ? 'tramite_id' : 'dependencia_id';
+  const action = ACCIONES[tipo] ?? registrarVerificacionDependencia;
+  const idField = ID_FIELD[tipo] ?? 'dependencia_id';
   const [state, formAction, pending] = useActionState(action, null);
 
   return (

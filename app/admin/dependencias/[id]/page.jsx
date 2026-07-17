@@ -4,7 +4,12 @@ import AdminChrome from '../../AdminChrome';
 import DependenciaForm from '../../DependenciaForm';
 import EstadoControl from '../../EstadoControl';
 import VerificacionForm from '../../VerificacionForm';
-import { agregarTelefonoDependencia, eliminarTelefonoDependencia } from '../../contenido-actions';
+import {
+  agregarTelefonoDependencia, eliminarTelefonoDependencia,
+  agregarHorarioDependencia, eliminarHorarioDependencia,
+  agregarExcepcionDependencia, eliminarExcepcionDependencia,
+} from '../../contenido-actions';
+import { DIAS } from '../../../../lib/contenido';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,8 +24,10 @@ export default async function EditarDependenciaPage({ params }) {
   const { data: dep } = await supabaseAdmin.from('dependencias').select('*').eq('id', id).single();
   if (!dep) notFound();
 
-  const [{ data: tels = [] }, { data: vers = [] }] = await Promise.all([
+  const [{ data: tels = [] }, { data: horarios = [] }, { data: excepciones = [] }, { data: vers = [] }] = await Promise.all([
     supabaseAdmin.from('dependencia_telefonos').select('*').eq('dependencia_id', id),
+    supabaseAdmin.from('dependencia_horarios').select('*').eq('dependencia_id', id).order('dia_semana'),
+    supabaseAdmin.from('dependencia_horarios_excepciones').select('*').eq('dependencia_id', id).order('fecha'),
     supabaseAdmin.from('dependencia_verificaciones').select('*').eq('dependencia_id', id).order('verificado_en', { ascending: false }),
   ]);
 
@@ -65,6 +72,61 @@ export default async function EditarDependenciaPage({ params }) {
             <input name="extension" className="pf-field" placeholder="Ext." style={{ maxWidth: 90 }} />
             <input name="etiqueta" className="pf-field" placeholder="Etiqueta (ej. Recepción)" />
             <button className="btn btn--ghost" type="submit">Agregar teléfono</button>
+          </form>
+        </section>
+
+        <section className="admin-section">
+          <h2 className="admin-section-title">Horarios</h2>
+          <p className="admin-muted">Editar horarios invalida la verificación del grupo <b>horarios</b> (y se refleja en los trámites que la consumen).</p>
+          {horarios.length === 0 ? <p className="admin-muted">Sin horarios.</p> : (
+            <ul className="admin-list">
+              {horarios.map((h) => (
+                <li key={h.id} className="admin-list-row">
+                  <span><b>{DIAS[h.dia_semana]}</b> · {h.abre?.slice(0, 5)}–{h.cierra?.slice(0, 5)}</span>
+                  <form action={eliminarHorarioDependencia}>
+                    <input type="hidden" name="id" value={h.id} />
+                    <input type="hidden" name="dependencia_id" value={dep.id} />
+                    <button className="admin-link admin-link--danger" type="submit">Quitar</button>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          )}
+          <form action={agregarHorarioDependencia} className="admin-inline admin-inline--wrap">
+            <input type="hidden" name="dependencia_id" value={dep.id} />
+            <select name="dia_semana" className="pf-field" style={{ maxWidth: 150 }}>
+              {DIAS.map((d, i) => <option key={i} value={i}>{d}</option>)}
+            </select>
+            <input name="abre" type="time" className="pf-field" style={{ maxWidth: 130 }} required />
+            <input name="cierra" type="time" className="pf-field" style={{ maxWidth: 130 }} required />
+            <button className="btn btn--ghost" type="submit">Agregar horario</button>
+          </form>
+        </section>
+
+        <section className="admin-section">
+          <h2 className="admin-section-title">Excepciones (días especiales)</h2>
+          {excepciones.length === 0 ? <p className="admin-muted">Sin excepciones.</p> : (
+            <ul className="admin-list">
+              {excepciones.map((e) => (
+                <li key={e.id} className="admin-list-row">
+                  <span><b>{e.fecha}</b> · {e.cerrado ? 'Cerrado' : `${e.abre?.slice(0, 5)}–${e.cierra?.slice(0, 5)}`}{e.motivo ? ` · ${e.motivo}` : ''}</span>
+                  <form action={eliminarExcepcionDependencia}>
+                    <input type="hidden" name="id" value={e.id} />
+                    <input type="hidden" name="dependencia_id" value={dep.id} />
+                    <button className="admin-link admin-link--danger" type="submit">Quitar</button>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          )}
+          <form action={agregarExcepcionDependencia} className="admin-inline admin-inline--wrap">
+            <input type="hidden" name="dependencia_id" value={dep.id} />
+            <input name="fecha" type="date" className="pf-field" style={{ maxWidth: 170 }} required />
+            <label className="admin-check"><input type="checkbox" name="cerrado" defaultChecked /> Cerrado</label>
+            <input name="abre" type="time" className="pf-field" style={{ maxWidth: 120 }} />
+            <input name="cierra" type="time" className="pf-field" style={{ maxWidth: 120 }} />
+            <input name="motivo" className="pf-field" placeholder="Motivo (ej. Día festivo)" />
+            <button className="btn btn--ghost" type="submit">Agregar excepción</button>
           </form>
         </section>
 
