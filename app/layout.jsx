@@ -87,11 +87,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" data-color="azul" data-mood="luminoso" data-font="sans" className={`${spectral.variable} ${hanken.variable}`} suppressHydrationWarning>
       <body>
-        <Script id="theme-init" strategy="beforeInteractive">{`
-          document.documentElement.className += ' reveal-on';
-          var _mood = localStorage.getItem('gsj-mood');
-          if (_mood) document.documentElement.setAttribute('data-mood', _mood);
-        `}</Script>
+        {/* Script de tema externo ('self'): sin inline, compatible con el CSP estricto del admin */}
+        <Script id="theme-init" src="/theme-init.js" strategy="beforeInteractive" />
         {children}
         <Analytics />
       </body>
